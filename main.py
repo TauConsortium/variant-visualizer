@@ -52,6 +52,7 @@ for _, row in NPC1_variants.iterrows():
         mode='text',
         text=str(row['case']),
         textposition='top center',
+        textfont=dict(size=10),
         showlegend=False
     ))
     
@@ -62,6 +63,7 @@ for _, row in NPC1_variants.iterrows():
         mode='text',
         text=str(row['control']),
         textposition='top center',
+        textfont=dict(size=10),
         showlegend=False
     ))
 
