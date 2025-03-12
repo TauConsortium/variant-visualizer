@@ -9,39 +9,60 @@ output_dir = "output"
 files = [f for f in os.listdir(output_dir) if f.endswith(".txt")]
 
 def load_data(variant_file):
-    NPC1_variants = pd.read_csv(f"{output_dir}/{variant_file}", delimiter="\t")
+    variants = pd.read_csv(f"{output_dir}/{variant_file}", delimiter="\t")
     domain_file = variant_file.replace("variants", "domains")
     if os.path.exists(f"{output_dir}/{domain_file}"):
-        NPC1_domains = pd.read_csv(f"{output_dir}/{domain_file}", delimiter="\t")
+        domains = pd.read_csv(f"{output_dir}/{domain_file}", delimiter="\t")
     else:
-        NPC1_domains = None
-    return NPC1_domains, NPC1_variants
+        domains = None
+    return domains, variants
+
+import itertools
+
+import itertools
+import plotly.graph_objects as go
 
 def create_figure(NPC1_domains, NPC1_variants):
     fig = go.Figure()
-    
+
+    # Define an aesthetically pleasing color palette
+    colors = itertools.cycle([
+        "#1f77b4",  # Muted Blue
+        "#ff7f0e",  # Safety Orange
+        "#2ca02c",  # Cooked Asparagus Green
+        "#d62728",  # Brick Red
+        "#9467bd",  # Muted Purple
+        "#8c564b",  # Chestnut Brown
+        "#e377c2",  # Raspberry Pink
+        "#7f7f7f",  # Middle Gray
+        "#bcbd22",  # Curry Yellow-Green
+        "#17becf"   # Blue-Teal
+    ])
+
+    # Assign a unique color to each domain
+    domain_colors = {}
+    legend_shown = set()  # Keep track of which domains are already in the legend
+
     # Add gene domains if available
     if NPC1_domains is not None:
-        unique_domains = set()
         for _, row in NPC1_domains.iterrows():
-            if row['Domain'] not in unique_domains:
-                fig.add_trace(go.Scatter(
-                    x=[row['AA_start'], row['AA_end']],
-                    y=[0, 0],
-                    mode='lines',
-                    line=dict(width=8),
-                    name=row['Domain']
-                ))
-                unique_domains.add(row['Domain'])
-            else:
-                fig.add_trace(go.Scatter(
-                    x=[row['AA_start'], row['AA_end']],
-                    y=[0, 0],
-                    mode='lines',
-                    line=dict(width=8),
-                    showlegend=False
-                ))
-    
+            domain_name = row['Domain']
+
+            if domain_name not in domain_colors:
+                domain_colors[domain_name] = next(colors)  # Assign a new color
+
+            show_legend = domain_name not in legend_shown  # Show in legend only once
+            legend_shown.add(domain_name)
+
+            fig.add_trace(go.Scatter(
+                x=[row['AA_start'], row['AA_end']],
+                y=[0, 0],
+                mode='lines',
+                line=dict(width=8, color=domain_colors[domain_name]),
+                name=domain_name if show_legend else None,  # Avoid duplicate names
+                showlegend=show_legend
+            ))
+
     # Add variants as points with case/control counts
     for _, row in NPC1_variants.iterrows():
         color = "red" if row['control'] == 0 else "black"
@@ -55,7 +76,7 @@ def create_figure(NPC1_domains, NPC1_variants):
             name=row['variant'],
             showlegend=False
         ))
-        
+
         # Add case count label
         fig.add_trace(go.Scatter(
             x=[row['AA']],
@@ -66,7 +87,7 @@ def create_figure(NPC1_domains, NPC1_variants):
             textfont=dict(size=14),
             showlegend=False
         ))
-        
+
         # Add control count label
         fig.add_trace(go.Scatter(
             x=[row['AA']],
@@ -77,7 +98,7 @@ def create_figure(NPC1_domains, NPC1_variants):
             textfont=dict(size=14),
             showlegend=False
         ))
-    
+
     fig.add_trace(go.Scatter(
         x=[0], y=[0.2], mode='text', text="Cases", textposition='top center',
         showlegend=False
@@ -94,8 +115,9 @@ def create_figure(NPC1_domains, NPC1_variants):
         showlegend=True,
         height=500
     )
-    
+
     return fig
+
 
 # Dash App Setup
 app = dash.Dash(__name__)
@@ -118,8 +140,8 @@ app.layout = html.Div([
 def update_graph(selected_variant_file):
     if not selected_variant_file:
         return go.Figure()
-    NPC1_domains, NPC1_variants = load_data(selected_variant_file)
-    return create_figure(NPC1_domains, NPC1_variants)
+    domains, variants = load_data(selected_variant_file)
+    return create_figure(domains, variants)
 
 if __name__ == "__main__":
     app.run_server(debug=True)
