@@ -22,10 +22,10 @@ import itertools
 import itertools
 import plotly.graph_objects as go
 
-def create_figure(NPC1_domains, NPC1_variants):
+def create_figure(domains, variants):
     fig = go.Figure()
 
-    # Define an aesthetically pleasing color palette
+    # ChatGPT colors lol
     colors = itertools.cycle([
         "#1f77b4",  # Muted Blue
         "#ff7f0e",  # Safety Orange
@@ -44,8 +44,8 @@ def create_figure(NPC1_domains, NPC1_variants):
     legend_shown = set()  # Keep track of which domains are already in the legend
 
     # Add gene domains if available
-    if NPC1_domains is not None:
-        for _, row in NPC1_domains.iterrows():
+    if domains is not None:
+        for _, row in domains.iterrows():
             domain_name = row['Domain']
 
             if domain_name not in domain_colors:
@@ -60,11 +60,12 @@ def create_figure(NPC1_domains, NPC1_variants):
                 mode='lines',
                 line=dict(width=8, color=domain_colors[domain_name]),
                 name=domain_name if show_legend else None,  # Avoid duplicate names
-                showlegend=show_legend
+                showlegend=show_legend,
+                hoverinfo="skip"
             ))
 
     # Add variants as points with case/control counts
-    for _, row in NPC1_variants.iterrows():
+    for _, row in variants.iterrows():
         color = "red" if row['control'] == 0 else "black"
         fig.add_trace(go.Scatter(
             x=[row['AA']],
