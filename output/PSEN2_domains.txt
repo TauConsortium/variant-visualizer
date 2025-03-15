@@ -1,1 +1,0 @@
-Domain	Domain_n	start	AA_start	AA_end	AA_N

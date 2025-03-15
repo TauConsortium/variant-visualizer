@@ -2,6 +2,7 @@ import dash
 from dash import dcc, html, Input, Output
 import plotly.graph_objects as go
 import pandas as pd
+import itertools
 import os
 
 # Get predefined files from the output directory
@@ -10,22 +11,12 @@ files = [f for f in os.listdir(output_dir) if f.endswith(".txt")]
 
 def load_data(variant_file):
     variants = pd.read_csv(f"{output_dir}/{variant_file}", delimiter="\t")
-    domain_file = variant_file.replace("variants", "domains")
-    if os.path.exists(f"{output_dir}/{domain_file}"):
-        domains = pd.read_csv(f"{output_dir}/{domain_file}", delimiter="\t")
-    else:
-        domains = None
-    return domains, variants
+    return variants
 
-import itertools
-
-import itertools
-import plotly.graph_objects as go
-
-def create_figure(domains, variants):
+def create_figure(variants):
     fig = go.Figure()
 
-    # ChatGPT colors lol
+    # Define a visually distinct color palette
     colors = itertools.cycle([
         "#1f77b4",  # Muted Blue
         "#ff7f0e",  # Safety Orange
@@ -39,43 +30,30 @@ def create_figure(domains, variants):
         "#17becf"   # Blue-Teal
     ])
 
-    # Assign a unique color to each domain
-    domain_colors = {}
-    legend_shown = set()  # Keep track of which domains are already in the legend
+    # Assign a unique color to each exon
+    exon_colors = {}
+    legend_shown = set()
 
-    # Add gene domains if available
-    if domains is not None:
-        for _, row in domains.iterrows():
-            domain_name = row['Domain']
-
-            if domain_name not in domain_colors:
-                domain_colors[domain_name] = next(colors)  # Assign a new color
-
-            show_legend = domain_name not in legend_shown  # Show in legend only once
-            legend_shown.add(domain_name)
-
-            fig.add_trace(go.Scatter(
-                x=[row['AA_start'], row['AA_end']],
-                y=[0, 0],
-                mode='lines',
-                line=dict(width=8, color=domain_colors[domain_name]),
-                name=domain_name if show_legend else None,  # Avoid duplicate names
-                showlegend=show_legend,
-                hoverinfo="skip"
-            ))
-
-    # Add variants as points with case/control counts
+    # Add variants as points colored by exon
     for _, row in variants.iterrows():
-        color = "red" if row['control'] == 0 else "black"
+        exon_name = row['exon']
+
+        if exon_name not in exon_colors:
+            exon_colors[exon_name] = next(colors)  # Assign a new color
+
+        show_legend = exon_name not in legend_shown
+        legend_shown.add(exon_name)
+
         fig.add_trace(go.Scatter(
             x=[row['AA']],
             y=[0],
             mode='markers+text',
-            marker=dict(color=color, size=10),
+            marker=dict(color=exon_colors[exon_name], size=10),
             text=row['variant'],
             textposition='top center',
-            name=row['variant'],
-            showlegend=False
+            name=exon_name if show_legend else None,  # Show legend only once
+            showlegend=show_legend,
+            hoverinfo='skip'  # Disable hover
         ))
 
         # Add case count label
@@ -86,7 +64,8 @@ def create_figure(domains, variants):
             text=str(row['case']),
             textposition='top center',
             textfont=dict(size=14),
-            showlegend=False
+            showlegend=False,
+            hoverinfo='skip'
         ))
 
         # Add control count label
@@ -97,20 +76,23 @@ def create_figure(domains, variants):
             text=str(row['control']),
             textposition='top center',
             textfont=dict(size=14),
-            showlegend=False
+            showlegend=False,
+            hoverinfo='skip'
         ))
 
     fig.add_trace(go.Scatter(
         x=[0], y=[0.2], mode='text', text="Cases", textposition='top center',
-        showlegend=False
+        showlegend=False,
+        hoverinfo='skip'
     ))
     fig.add_trace(go.Scatter(
         x=[0], y=[0.3], mode='text', text="Controls", textposition='top center',
-        showlegend=False
+        showlegend=False,
+        hoverinfo='skip'
     ))
 
     fig.update_layout(
-        title="NPC1 Gene and Variant Visualization",
+        title="Gene Variant Visualization (Colored by Exon)",
         xaxis=dict(title="Amino Acid Position", tickmode='linear', dtick=200),
         yaxis=dict(visible=False),
         showlegend=True,
@@ -118,7 +100,6 @@ def create_figure(domains, variants):
     )
 
     return fig
-
 
 # Dash App Setup
 app = dash.Dash(__name__)
@@ -141,8 +122,8 @@ app.layout = html.Div([
 def update_graph(selected_variant_file):
     if not selected_variant_file:
         return go.Figure()
-    domains, variants = load_data(selected_variant_file)
-    return create_figure(domains, variants)
+    variants = load_data(selected_variant_file)
+    return create_figure(variants)
 
 if __name__ == "__main__":
     app.run_server(debug=True)
