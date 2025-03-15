@@ -32,28 +32,47 @@ def create_figure(variants):
 
     # Assign a unique color to each exon
     exon_colors = {}
+    exon_points = {}
     legend_shown = set()
 
-    # Add variants as points colored by exon
+    # Group variants by exon
     for _, row in variants.iterrows():
         exon_name = row['exon']
-
         if exon_name not in exon_colors:
             exon_colors[exon_name] = next(colors)  # Assign a new color
-
+        
+        if exon_name not in exon_points:
+            exon_points[exon_name] = {'x': [], 'y': []}
+        
+        exon_points[exon_name]['x'].append(row['AA'])
+        exon_points[exon_name]['y'].append(0)
+    
+    # Add traces for each exon
+    for exon_name, points in exon_points.items():
         show_legend = exon_name not in legend_shown
         legend_shown.add(exon_name)
-
+        
+        fig.add_trace(go.Scatter(
+            x=points['x'],
+            y=points['y'],
+            mode='lines+markers',
+            marker=dict(color=exon_colors[exon_name], size=10),
+            line=dict(color=exon_colors[exon_name], width=2),
+            name=exon_name if show_legend else None,  # Show legend only once
+            showlegend=show_legend,
+            hoverinfo='skip'
+        ))
+    
+    # Add variant labels
+    for _, row in variants.iterrows():
         fig.add_trace(go.Scatter(
             x=[row['AA']],
             y=[0],
-            mode='markers+text',
-            marker=dict(color=exon_colors[exon_name], size=10),
+            mode='text',
             text=row['variant'],
             textposition='top center',
-            name=exon_name if show_legend else None,  # Show legend only once
-            showlegend=show_legend,
-            hoverinfo='skip'  # Disable hover
+            showlegend=False,
+            hoverinfo='skip'
         ))
 
         # Add case count label
