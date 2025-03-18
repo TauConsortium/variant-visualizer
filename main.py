@@ -35,45 +35,80 @@ def create_figure(variants):
     exon_points = {}
     legend_shown = set()
 
-    # Group variants by exon, collecting x, y, and hover text
+    # Group variants by exon
     for _, row in variants.iterrows():
         exon_name = row['exon']
         if exon_name not in exon_colors:
             exon_colors[exon_name] = next(colors)  # Assign a new color
         
         if exon_name not in exon_points:
-            exon_points[exon_name] = {
-                'x': [],
-                'y': [],
-                'hover': []
-            }
+            exon_points[exon_name] = {'x': [], 'y': []}
         
         exon_points[exon_name]['x'].append(row['AA'])
-        exon_points[exon_name]['y'].append(0)  # all points at y=0
-        # Build a hover string with variant, case, and control info
-        hover_str = (
-            f"Variant: {row['variant']}<br>"
-            f"Cases: {row['case']}<br>"
-            f"Controls: {row['control']}"
-        )
-        exon_points[exon_name]['hover'].append(hover_str)
-
-    # Add one scatter trace per exon
+        exon_points[exon_name]['y'].append(0)
+    
+    # Add traces for each exon
     for exon_name, points in exon_points.items():
         show_legend = exon_name not in legend_shown
         legend_shown.add(exon_name)
-
+        
         fig.add_trace(go.Scatter(
             x=points['x'],
             y=points['y'],
             mode='lines+markers',
-            line=dict(color=exon_colors[exon_name], width=2),
             marker=dict(color=exon_colors[exon_name], size=10),
-            text=points['hover'],
-            hoverinfo='text',         # Only show the text on hover
-            name=exon_name if show_legend else None,
-            showlegend=show_legend
+            line=dict(color=exon_colors[exon_name], width=2),
+            name=exon_name if show_legend else None,  # Show legend only once
+            showlegend=show_legend,
+            hoverinfo='skip'
         ))
+    
+    # Add variant labels
+    for _, row in variants.iterrows():
+        fig.add_trace(go.Scatter(
+            x=[row['AA']],
+            y=[0],
+            mode='text',
+            text=row['variant'],
+            textposition='top center',
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+
+        # Add case count label
+        fig.add_trace(go.Scatter(
+            x=[row['AA']],
+            y=[0.2],
+            mode='text',
+            text=str(row['case']),
+            textposition='top center',
+            textfont=dict(size=14),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+
+        # Add control count label
+        fig.add_trace(go.Scatter(
+            x=[row['AA']],
+            y=[0.3],
+            mode='text',
+            text=str(row['control']),
+            textposition='top center',
+            textfont=dict(size=14),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+
+    fig.add_trace(go.Scatter(
+        x=[0], y=[0.2], mode='text', text="Cases", textposition='top center',
+        showlegend=False,
+        hoverinfo='skip'
+    ))
+    fig.add_trace(go.Scatter(
+        x=[0], y=[0.3], mode='text', text="Controls", textposition='top center',
+        showlegend=False,
+        hoverinfo='skip'
+    ))
 
     fig.update_layout(
         title="Gene Variant Visualization (Colored by Exon)",
