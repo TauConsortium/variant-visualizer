@@ -1,55 +1,86 @@
-from shiny import App, ui, render
+import matplotlib
+matplotlib.use("Agg")  # Use a non-GUI backend
+
+import dash
+from dash import dcc, html, Input, Output
 import pandas as pd
 import matplotlib.pyplot as plt
-from adjustText import adjust_text
 import os
+from adjustText import adjust_text
+import io
+import base64
 
-# Get available files in output directory
-def get_files(pattern):
-    return [f"output/{f}" for f in os.listdir("output") if pattern in f]
 
-# Shiny UI
-app_ui = ui.page_sidebar(
-    ui.sidebar(
-        ui.input_select("domain_file", "Select Domain File:", get_files("_domains.txt")),
-        ui.input_select("variant_file", "Select Variant File:", get_files("_variants.txt"))
+# Initialize the Dash app
+app = dash.Dash(__name__)
+server = app.server  # Needed for deployment
+
+# Path to the output directory
+output_dir = "output"
+
+# Get available files in the output directory
+files = [f for f in os.listdir(output_dir) if f.endswith(".txt")]
+
+# Layout of the app
+app.layout = html.Div([
+    html.H1("Variants Visualizer"),
+    dcc.Dropdown(
+        id="file-dropdown",
+        options=[{"label": f, "value": f} for f in files],
+        placeholder="Select a file",
     ),
-    ui.output_plot("gene_variant_plot")
+    html.Img(id="plot-image"),
+])
+
+@app.callback(
+    Output("plot-image", "src"),
+    Input("file-dropdown", "value")
 )
-
-# Server logic
-def server(input, output, session):
+def update_plot(selected_file):
+    if not selected_file:
+        return ""
     
-    @output
-    @render.plot
-    def gene_variant_plot():
-        df_var = pd.read_csv(input.variant_file(), sep="\t")
-        df_dom = pd.read_csv(input.domain_file(), sep="\t")
-        
-        fig, ax = plt.subplots(figsize=(12, 4))
-        
-        # Plot gene domains
-        for _, row in df_dom.iterrows():
-            ax.plot([row['AA_start'], row['AA_end']], [0, 0], linewidth=8)
-        
-        # Plot variants
-        ax.scatter(df_var["AA"], [0] * len(df_var), s=50, label="Variants")
-        
-        # Add labels with adjustText
-        texts = []
-        for _, row in df_var.iterrows():
-            texts.append(ax.text(row['AA'], 0.1, row['variant'], rotation=90, fontsize=8, ha='center'))
-            texts.append(ax.text(row['AA'], 0.2, str(row['case']), fontsize=8, ha='center'))
-            texts.append(ax.text(row['AA'], 0.25, str(row['control']), fontsize=8, ha='center'))
-        
-        adjust_text(texts, ax=ax, arrowprops=dict(arrowstyle='-', color='gray', lw=0.5))
-        
-        ax.set_xlim(0, max(df_var['AA']) + 50)
-        ax.set_xticks(range(0, max(df_var['AA']) + 100, 200))
-        ax.set_yticks([])
-        ax.set_xlabel("NPC1")
-        ax.set_title("NPC1 Variants and Domains")
-        
-        return fig
+    file_path = os.path.join(output_dir, selected_file)
+    
+    # Load the data
+    variants = pd.read_csv(file_path, sep="\t")  # Adjust separator if needed
 
-app = App(app_ui, server)
+    # Set up the figure
+    fig, ax = plt.subplots(figsize=(12, 4))
+    texts = []
+    
+    # Scatter plot for variants
+    for _, row in variants.iterrows():
+        color = "red" if row["control"] == 0 else "black"
+        if row["case"] == 0 and row["control"] == 0:
+            continue
+        ax.scatter(row["AA"], 0, color=color, s=50)
+        texts.append(ax.text(
+            row["AA"], 0.05, f"{row['variant']} ({row['case']} / {row['control']})", 
+            rotation=90, ha="center", fontsize=8, color=color
+        ))
+    
+    # Adjust text to prevent overlap
+    adjust_text(texts, arrowprops=dict(arrowstyle="-", color="gray", lw=0.5))
+
+    # Formatting
+    ax.set_xlim(0, variants["AA"].max() + 50)
+    ax.set_ylim(-0.05, 0.2)
+    ax.set_xlabel("Amino Acid Position", fontsize=12)
+    ax.set_yticks([])
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    plt.title("Variants and Case/Control Counts", fontsize=14)
+    
+    # Save the plot to a buffer
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png", bbox_inches="tight")
+    plt.close(fig)
+    buf.seek(0)
+    encoded_image = base64.b64encode(buf.read()).decode("utf-8")
+    
+    return f"data:image/png;base64,{encoded_image}"
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
