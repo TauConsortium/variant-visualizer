@@ -11,3 +11,7 @@ Which isoforms we want AAChange (check Slack):
 PSEN2:NM_000447:exon4:c.C80T:p.T27M,PSEN2:NM_012486:exon4:c.C80T:p.T27M
 TARDBP:NM_007375:exon6:c.G1242A:p.M414I
 PSEN1:NM_000021:exon7:c.C563T:p.T188I,PSEN1:NM_007318:exon7:c.C551T:p.T184I
+
+1. Make a text file with 900 individuals (family id and genome id)
+2. Extract those people from .bed file (check slack for plink command)
+3. case is 2 control is 1 (phenotype)

@@ -55,7 +55,7 @@ def update_plot(selected_file):
     # Scatter plot for variants
     for _, row in variants.iterrows():
         color = "crimson" if row["control"] == 0 else "black"
-        ax.scatter(row["AA"], 0, color=color, s=25)
+        ax.scatter(row["AA"], 0, color=color, s=5)
         texts.append(ax.text(
             row["AA"], 0.05, f"{row['variant']} ({row['case']} / {row['control']})", 
             rotation=90, ha="center", fontsize=8, color=color
