@@ -20,7 +20,7 @@ datasets = ["tangl", "redlat", "custom"]
 
 # Layout of the app
 app.layout = html.Div([
-    html.H1("Variants Visualizer", style={'textAlign': 'center'}),
+    # html.H1("Case/Control Variant Visualizer", style={'textAlign': 'center'}),
 
     dcc.Tabs(
         id="dataset-tabs",
@@ -149,7 +149,7 @@ def update_plot(selected_file):
     handles = [plt.Line2D([0], [0], color=color, linewidth=5, label=exon) for exon, color in exon_legend.items()]
     ax.legend(handles=handles, title="Exons", loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8)
 
-    plt.title("Variants and Case/Control Counts", fontsize=14)
+    plt.title("Variants Counts in Case/Control", fontsize=14)
 
     # Save the plot to a buffer
     buf = io.BytesIO()
