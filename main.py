@@ -10,24 +10,25 @@ import io
 import base64
 
 # Initialize the Dash app
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
 server = app.server  # Needed for deployment
 
 # Path to the output directory
 data_dir = "data"
-
 datasets = ["tangl", "redlat", "custom"]
 
 # Layout of the app
 app.layout = html.Div([
-    # html.H1("Case/Control Variant Visualizer", style={'textAlign': 'center'}),
-
     dcc.Tabs(
         id="dataset-tabs",
         value='redlat',
         children=[dcc.Tab(label=ds.upper(), value=ds) for ds in datasets],
         style={"marginBottom": "20px", "fontSize": "12px", "height": "36px"}
     ),
+
+    html.Div(id="upload-container"),
+
+    dcc.Store(id="custom-file-store"),
 
     dcc.Dropdown(
         id="file-dropdown",
@@ -39,25 +40,71 @@ app.layout = html.Div([
 
     html.Div([
         html.P("If you use any of our data, please cite us:", style={"fontWeight": "bold"}),
-        html.P("TANGL: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects. *Genome Medicine*, 14(1), 27."),
-        html.P("ReDLat: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... & Yokoyama, J. S. (2024). Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations. *medRxiv*.")
+        html.P("TANGL: Acosta-Uribe, J., Aguill\u00f3n, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects. *Genome Medicine*, 14(1), 27."),
+        html.P("ReDLat: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... & Yokoyama, J. S. (2024). Genetic Contributions to Alzheimer\u2019s Disease and Frontotemporal Dementia in Admixed Latin American Populations. *medRxiv*.")
     ], style={"marginTop": "40px", "padding": "10px", "borderTop": "1px solid #ccc", "fontSize": "16px"})
 ])
 
 @app.callback(
-    Output("file-dropdown", "options"),
+    Output("upload-container", "children"),
     Input("dataset-tabs", "value")
 )
-def update_file_options(selected_dataset):
-    if not selected_dataset:
+def toggle_upload(tab):
+    if tab != "custom":
         return []
+    return dcc.Upload(
+        id="upload-data",
+        children=html.Div(["Drag and Drop or ", html.A("Select a .txt File")]),
+        style={
+            "width": "100%",
+            "height": "60px",
+            "lineHeight": "60px",
+            "borderWidth": "1px",
+            "borderStyle": "dashed",
+            "borderRadius": "5px",
+            "textAlign": "center",
+            "marginBottom": "10px",
+        },
+        multiple=False,
+    )
 
-    folder_path = os.path.join(data_dir, selected_dataset)
-    if not os.path.exists(folder_path):
-        return []
+@app.callback(
+    Output("custom-file-store", "data"),
+    Input("upload-data", "contents"),
+    State("upload-data", "filename"),
+    prevent_initial_call=True,
+)
+def store_uploaded_file(content, filename):
+    if content is None or not filename.endswith(".txt"):
+        return None
 
-    files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
-    return [{"label": f, "value": os.path.join(selected_dataset, f)} for f in files]
+    content_type, content_string = content.split(",")
+    decoded = base64.b64decode(content_string)
+
+    os.makedirs(os.path.join(data_dir, "custom"), exist_ok=True)
+    save_path = os.path.join("custom", filename)
+    with open(os.path.join(data_dir, save_path), "wb") as f:
+        f.write(decoded)
+
+    return save_path
+
+@app.callback(
+    Output("file-dropdown", "options"),
+    Input("dataset-tabs", "value"),
+    Input("custom-file-store", "data")
+)
+def update_file_options(selected_dataset, uploaded_path):
+    options = []
+    if selected_dataset:
+        folder_path = os.path.join(data_dir, selected_dataset)
+        if os.path.exists(folder_path):
+            files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
+            options = [{"label": f, "value": os.path.join(selected_dataset, f)} for f in files]
+
+    if selected_dataset == "custom" and uploaded_path and uploaded_path.endswith(".txt"):
+        options.append({"label": f"[Uploaded] {os.path.basename(uploaded_path)}", "value": uploaded_path})
+
+    return options
 
 @app.callback(
     Output("plot-image", "src"),
@@ -69,25 +116,19 @@ def update_plot(selected_file):
 
     file_path = os.path.join(data_dir, selected_file)
 
-    # Load the data
-    variants = pd.read_csv(file_path, sep="\t")  # Adjust separator if needed
-
-    # Identify exon ranges
+    variants = pd.read_csv(file_path, sep="\t")
     exon_ranges = variants.groupby("exon")["AA"].agg(["min", "max"]).reset_index()
 
-    # Set up the figure
     fig, ax = plt.subplots(figsize=(12, 4), dpi=100)
 
-    # Group nearby variants for lollipop clustering
     variants = variants.sort_values("AA").reset_index(drop=True)
     grouped_variants = []
     cluster = [variants.iloc[0]]
-    cluster_distance = 10  # maximum distance between variants to be grouped
+    cluster_distance = 10
 
     for i in range(1, len(variants)):
         current = variants.iloc[i]
         previous = cluster[-1]
-
         same_exon = current["exon"] == previous["exon"]
         close_by = abs(current["AA"] - previous["AA"]) <= cluster_distance
 
@@ -98,35 +139,28 @@ def update_plot(selected_file):
             cluster = [current]
     grouped_variants.append(cluster)
 
-    # Draw grouped lollipops
     for cluster in grouped_variants:
-        x = sum(v["AA"] for v in cluster) / len(cluster)
-        base_y = -0.07  # Ensure the stick starts just below the x-axis visually
-        y = -0.03  # Shorter stick length
-        color = "crimson" if all(v["control"] == 0 for v in cluster) else "black"
+        x = sum(v["AA"] for _, v in pd.DataFrame(cluster).iterrows()) / len(cluster)
+        base_y = -0.07
+        y = -0.03
+        color = "crimson" if all(v["control"] == 0 for _, v in pd.DataFrame(cluster).iterrows()) else "black"
 
-        # Draw the "stick"
         ax.vlines(x, base_y, y, color=color, linewidth=1)
 
-        # Draw one dot per variant
-        for i, v in enumerate(cluster):
-            offset = -i * 0.005  # slight offset for stacking dots
+        for i, (_, v) in enumerate(pd.DataFrame(cluster).iterrows()):
+            offset = -i * 0.005
             ax.scatter(x, y + offset, color=color, s=10, zorder=3)
 
-        # Combine labels
-        label = "\n".join([f"{v['variant']} ({v['case']} / {v['control']})" for v in cluster])
+        label = "\n".join([f"{v['variant']} ({v['case']} / {v['control']})" for _, v in pd.DataFrame(cluster).iterrows()])
         ax.text(x, y + len(cluster)*0.003 + 0.01, label, rotation=90, ha="center", fontsize=8, color=color)
 
-    # Draw exon-colored bars **below** the x-axis
-    exon_y = -0.08  # Position below x-axis
-    colors = plt.cm.Paired.colors  # Get distinct colors for exons
-    exon_legend = {}  # To track unique exons for the legend
+    exon_y = -0.08
+    colors = plt.cm.Paired.colors
+    exon_legend = {}
 
     for i, (_, exon) in enumerate(exon_ranges.iterrows()):
         exon_color = colors[i % len(colors)]
-        min_width = 5  # Set a minimum width for exons
-
-        # Ensure the exon has a minimum width (extend small exons)
+        min_width = 5
         exon_start, exon_end = exon["min"], exon["max"]
         if exon_end - exon_start < min_width:
             exon_start -= min_width / 2
@@ -135,7 +169,6 @@ def update_plot(selected_file):
         ax.hlines(exon_y, exon_start, exon_end, colors=exon_color, linewidth=6, label=exon["exon"])
         exon_legend[exon["exon"]] = exon_color
 
-    # Formatting
     ax.set_xlim(0, variants["AA"].max() + 50)
     ax.set_ylim(-0.1, 0.25)
     ax.set_xlabel("Amino Acid Position", fontsize=12)
@@ -145,13 +178,11 @@ def update_plot(selected_file):
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_visible(False)
 
-    # Add exon legend (only once per exon), placed outside the plot to the right
     handles = [plt.Line2D([0], [0], color=color, linewidth=5, label=exon) for exon, color in exon_legend.items()]
     ax.legend(handles=handles, title="Exons", loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8)
 
     plt.title("Variants Counts in Case/Control", fontsize=14)
 
-    # Save the plot to a buffer
     buf = io.BytesIO()
     plt.savefig(buf, format="png", bbox_inches="tight")
     plt.close(fig)
