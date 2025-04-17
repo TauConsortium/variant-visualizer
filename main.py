@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use("Agg")  # Use a non-GUI backend
+matplotlib.use("Agg")
 
 import dash
 from dash import dcc, html, Input, Output, State
