@@ -2,6 +2,8 @@
 
 A Dash-based web application to visualize case/control variant counts. You may generate graphs from our predefined datasets or upload custom `.txt` files yourself.
 
+![psen1-variants](docs/psen1-variants.png)
+
 ## Contents
 
 - [Introduction](#introduction)
