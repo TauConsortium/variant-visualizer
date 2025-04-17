@@ -22,11 +22,17 @@ This application reads variant data from tab-delimited `.txt` files containing c
 
 ## Generating the `.txt` Files
 
-To prepare your own `.txt` variant files, ensure each file has a header row with the following columns (tab-delimited):
+The `.txt` file of your dataset must be tab-delimited. Here's an example.
 
 ```text
-exon	AA	variant	case	control
+Gene.refGene	AA	variant	case	control	exon
+PSEN1	35	R35W	0	1	exon4
+PSEN1	38	H38Q	0	1	exon4
+PSEN1	40	D40N	0	0	exon4
+PSEN1	63	V63A	0	0	exon4
 ```
+
+To generate these `.txt` files from a annotated `.tsv` file, the following script can be used, specifying the desired variants and isoform.
 
 ```bash
 python extract_variants.py \
