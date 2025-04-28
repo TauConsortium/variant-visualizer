@@ -1,0 +1,5 @@
+Gene.refGene	AA	variant	case	control	exon
+UBQLN2	242	A242T	1	0	exon1
+UBQLN2	301	S301P	6	5	exon1
+UBQLN2	336	T336I	1	0	exon1
+UBQLN2	346	S346C	2	0	exon1

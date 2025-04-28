@@ -1,0 +1,3 @@
+Gene.refGene	AA	variant	case	control	exon
+CHMP2B	29	I29V	1	0	exon2
+CHMP2B	187	S187N	13	1	exon6

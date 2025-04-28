@@ -1,0 +1,9 @@
+Gene.refGene	AA	variant	case	control	exon
+GRN	19	R19W	12	1	exon2
+GRN	139	C139R	1	0	exon5
+GRN	148	G148R	1	0	exon5
+GRN	182	T182M	1	0	exon6
+GRN	212	R212Q	1	0	exon7
+GRN	418	R418Q	1	1	exon11
+GRN	433	R433Q	2	1	exon11
+GRN	515	G515A	6	0	exon12

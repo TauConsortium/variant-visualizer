@@ -1,0 +1,7 @@
+Gene.refGene	AA	variant	case	control	exon
+MAPT	151	I151T	2	2	exon7
+MAPT	152	A152T	3	1	exon7
+MAPT	178	A178T	16	4	exon7
+MAPT	300	V300I	0	1	exon9
+MAPT	301	P301L	2	0	exon9
+MAPT	397	P397S	10	0	exon12

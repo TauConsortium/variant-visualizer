@@ -1,0 +1,3 @@
+Gene.refGene	AA	variant	case	control	exon
+HNRNPA2B1	322	G322E	1	0	exon10
+HNRNPA2B1	204	G204S	2	0	exon6

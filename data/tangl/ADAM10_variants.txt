@@ -1,0 +1,4 @@
+Gene.refGene	AA	variant	case	control	exon
+ADAM10	571	I571V	0	2	exon13
+ADAM10	205	G205R	0	1	exon6
+ADAM10	170	Q170H	5	5	exon5

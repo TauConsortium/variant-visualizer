@@ -72,6 +72,11 @@ def main():
     desired_isoforms = load_isoforms(args.isoforms)
 
     df = pd.read_csv(args.input, sep="\t", low_memory=False)
+    
+    # Fill missing All_affected and All_unaffected with "0/0/0"
+    df["All_affected"] = df["All_affected"].fillna("0/0/0")
+    df["All_unaffected"] = df["All_unaffected"].fillna("0/0/0")
+
     df_filtered = df[
         (df.get("Func.refGene") == args.func_ref) &
         (df.get("ExonicFunc.refGene") == args.exonic_func)

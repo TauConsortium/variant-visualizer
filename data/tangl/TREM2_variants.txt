@@ -1,0 +1,10 @@
+Gene.refGene	AA	variant	case	control	exon
+TREM2	211	L211P	21	3	exon4
+TREM2	157	H157Y	33	17	exon3
+TREM2	152	D152Y	1	0	exon3
+TREM2	96	T96K	19	3	exon2
+TREM2	87	D87N	2	1	exon2
+TREM2	62	R62H	27	14	exon2
+TREM2	47	R47H	24	6	exon2
+TREM2	28	A28V	2	0	exon2
+TREM2	5	R5Q	0	1	exon1
