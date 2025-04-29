@@ -1,4 +1,4 @@
-# ReDLat/Tangl Variant Viewer
+# Variant Visualizer
 
 A Dash-based web application to visualize case/control variant counts. You may generate graphs from our predefined datasets or upload custom `.txt` files yourself.
 
