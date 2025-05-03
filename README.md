@@ -45,12 +45,11 @@ python extract_variants.py \
 ## Installation
 
 1. **Clone** this repository:
+
    ```bash
    git clone https://github.com/ThePickleGawd/variant-visualizer.git
    cd variant-visualizer
    ```
-
-````
 
 2. **Create** a virtual environment and install dependencies:
    ```bash
@@ -86,4 +85,7 @@ If you use any of our data, please cite us:
 
 - **TANGL**: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). _A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects._ Genome Medicine, 14(1), 27.
 - **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
-````
+
+```
+
+```
