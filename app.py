@@ -265,6 +265,3 @@ def update_plot(selected_file, selected_cohort):
     encoded_image = base64.b64encode(buf.read()).decode("utf-8")
 
     return f"data:image/png;base64,{encoded_image}"
-
-if __name__ == "__main__":
-    app.run(debug=True)
