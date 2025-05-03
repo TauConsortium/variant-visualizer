@@ -1,2 +1,0 @@
-Gene.refGene	AA	variant	case	control	exon
-SOD1	21	F21L	1	0	exon1

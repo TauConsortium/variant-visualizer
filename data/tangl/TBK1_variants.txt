@@ -1,7 +1,0 @@
-Gene.refGene	AA	variant	case	control	exon
-TBK1	13	D13G	1	0	exon2
-TBK1	322	H322Y	1	0	exon8
-TBK1	407	D407G	1	0	exon10
-TBK1	464	V464A	6	5	exon12
-TBK1	508	L508I	6	0	exon14
-TBK1	573	R573C	0	6	exon15

@@ -11,29 +11,78 @@ import base64
 
 # Initialize the Dash app
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
-server = app.server  # Needed for deployment
+server = app.server
 
 # Path to the output directory
 data_dir = "data"
-datasets = ["tangl", "redlat", "custom"]
+datasets = ["tangl"]
+cohort_categories = [
+    ("case_control", "Case / Control"),
+    ("ad", "AD"),
+    ("eod", "EOD"),
+    ("ftld_mnd", "FTLD-MND"),
+    ("aao65", "AAO < 65"),
+    ("healthy70", "Healthy > 70"),
+]
+
+legend_map = {
+    "case_control": (
+        "Cases represents all affected individuals in the TANGL cohort. "
+        "It includes carriers of pathogenic variants like PSEN1 E280A. (n=646)\n"
+        "Controls represents unaffected individuals in the TANGL cohort. (n=254)\n"
+        "The dataset includes related individuals."
+    ),
+    "ad": (
+        "Homozygous / Heterozygous individuals with Alzheimer’s disease in the TANGL cohort. "
+        "It does not include carriers of pathogenic variants like PSEN1 E280A. "
+        "May include related individuals (n=280)."
+    ),
+    "eod": (
+        "Homozygous / Heterozygous individuals with early onset dementia (not AD, FTD, Parkinson’s, or Lewy body). "
+        "It does not include carriers of pathogenic variants. "
+        "May include related individuals (n=67)."
+    ),
+    "ftld_mnd": (
+        "Homozygous / Heterozygous individuals with FTD with or without Motor Neuron Syndrome (ALS, CBD, PSP). "
+        "It does not include carriers of pathogenic variants like MAPT P301L. "
+        "May include related individuals (n=157)."
+    ),
+    "aao65": (
+        "Homozygous / Heterozygous individuals from AD, FTLD-MND, and EOD cohorts "
+        "with age of onset ≤ 65. "
+        "Does not include carriers of pathogenic variants. "
+        "May include related individuals (n=396)."
+    ),
+    "healthy70": (
+        "Homozygous / Heterozygous individuals who are cognitively healthy at age 70 or older. "
+        "They are unrelated to each other and to other TANGL participants (n=76)."
+    )
+}
+
 
 # Layout of the app
 app.layout = html.Div([
     dcc.Tabs(
         id="dataset-tabs",
-        value='redlat',
+        value='tangl',
         children=[dcc.Tab(label=ds.upper(), value=ds) for ds in datasets],
         style={"marginBottom": "20px", "fontSize": "12px", "height": "36px"}
     ),
 
-    html.Div(id="upload-container"),
+    dcc.Tabs(
+        id="cohort-tabs",
+        value="case_control",
+        children=[dcc.Tab(label=label, value=val) for val, label in cohort_categories],
+        style={"marginBottom": "20px", "fontSize": "12px", "height": "36px"}
+    ),
 
+    html.Div(id="upload-container"),
     dcc.Store(id="custom-file-store"),
 
     dcc.Dropdown(
         id="file-dropdown",
         placeholder="Select a file",
-        value=os.path.join("redlat", "TARDBP_variants.txt")
+        value=os.path.join("tangl", "PSEN2")
     ),
 
     html.Img(id="plot-image", style={'width': '100%', 'height': 'auto'}),
@@ -75,7 +124,7 @@ def toggle_upload(tab):
     prevent_initial_call=True,
 )
 def store_uploaded_file(content, filename):
-    if content is None or not filename.endswith(".txt"):
+    if content is None:
         return None
 
     content_type, content_string = content.split(",")
@@ -98,32 +147,33 @@ def update_file_options(selected_dataset, uploaded_path):
     if selected_dataset:
         folder_path = os.path.join(data_dir, selected_dataset)
         if os.path.exists(folder_path):
-            files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
+            files = [f for f in os.listdir(folder_path)]
             options = [{"label": f, "value": os.path.join(selected_dataset, f)} for f in files]
 
-    if selected_dataset == "custom" and uploaded_path and uploaded_path.endswith(".txt"):
+    if selected_dataset == "custom" and uploaded_path:
         options.append({"label": f"[Uploaded] {os.path.basename(uploaded_path)}", "value": uploaded_path})
 
     return options
 
 @app.callback(
     Output("plot-image", "src"),
-    Input("file-dropdown", "value")
+    Input("file-dropdown", "value"),
+    Input("cohort-tabs", "value")
 )
-def update_plot(selected_file):
+def update_plot(selected_file, selected_cohort):
     if not selected_file:
         return ""
 
     file_path = os.path.join(data_dir, selected_file)
-
     variants = pd.read_csv(file_path, sep="\t")
+    variants["AA"] = pd.to_numeric(variants["AA"], errors="coerce")
+    variants = variants.dropna(subset=["AA"])
+    variants = variants.sort_values("AA").reset_index(drop=True)
     exon_ranges = variants.groupby("exon")["AA"].agg(["min", "max"]).reset_index()
 
     fig, ax = plt.subplots(figsize=(12, 4), dpi=100)
-
-    variants = variants.sort_values("AA").reset_index(drop=True)
     grouped_variants = []
-    cluster = [variants.iloc[0]]
+    cluster = [variants.iloc[0]] if not variants.empty else []
     cluster_distance = 10
 
     for i in range(1, len(variants)):
@@ -131,30 +181,51 @@ def update_plot(selected_file):
         previous = cluster[-1]
         same_exon = current["exon"] == previous["exon"]
         close_by = abs(current["AA"] - previous["AA"]) <= cluster_distance
-
         if same_exon and close_by:
             cluster.append(current)
         else:
             grouped_variants.append(cluster)
             cluster = [current]
-    grouped_variants.append(cluster)
+    if cluster:
+        grouped_variants.append(cluster)
 
     for cluster in grouped_variants:
-        x = sum(v["AA"] for _, v in pd.DataFrame(cluster).iterrows()) / len(cluster)
+        x = sum(v["AA"] for v in cluster) / len(cluster)
         base_y = -0.07
         y = -0.03
-        color = "crimson" if all(v["control"] == 0 for _, v in pd.DataFrame(cluster).iterrows()) else "black"
+
+        if selected_cohort == "case_control":
+            is_control_zero = all((v["het_control"] + v["hom_control"]) == 0 for v in cluster)
+        else:
+            is_control_zero = False  # can't define "control" for subcohorts, mark as black
+
+        color = "crimson" if is_control_zero else "black"
 
         ax.vlines(x, base_y, y, color=color, linewidth=1)
-
-        for i, (_, v) in enumerate(pd.DataFrame(cluster).iterrows()):
+        for i, v in enumerate(cluster):
             offset = -i * 0.005
             ax.scatter(x, y + offset, color=color, s=10, zorder=3)
 
-        label = "\n".join([f"{v['variant']} ({v['case']} / {v['control']})" for _, v in pd.DataFrame(cluster).iterrows()])
-        ax.text(x, y + len(cluster)*0.003 + 0.01, label, rotation=90, ha="center", fontsize=8, color=color)
+        het_col = "het_case" if selected_cohort == "case_control" else f"{selected_cohort}_het"
+        hom_col = "hom_case" if selected_cohort == "case_control" else f"{selected_cohort}_hom"
 
+        label = "\n".join([
+            f"{v['variant']} ({v.get(het_col, 0)} / {v.get(hom_col, 0)})" for v in cluster
+        ])
+        ax.text(x, y + len(cluster) * 0.003 + 0.01, label, rotation=90, ha="center", fontsize=8, color=color)
+
+
+    # Fill the entire bottom with gray first
     exon_y = -0.08
+    exon_height = 0.005
+    ax.fill_between(
+        [variants["AA"].min() - 10, variants["AA"].max() + 50],
+        exon_y - exon_height / 2,
+        exon_y + exon_height / 2,
+        color="lightgray",
+        zorder=0
+    )
+
     colors = plt.cm.Paired.colors
     exon_legend = {}
 
@@ -165,14 +236,14 @@ def update_plot(selected_file):
         if exon_end - exon_start < min_width:
             exon_start -= min_width / 2
             exon_end += min_width / 2
-
-        ax.hlines(exon_y, exon_start, exon_end, colors=exon_color, linewidth=6, label=exon["exon"])
+        ax.hlines(exon_y, exon_start, exon_end, colors=exon_color, linewidth=6, label=exon["exon"], zorder=1)
         exon_legend[exon["exon"]] = exon_color
+
 
     ax.set_xlim(0, variants["AA"].max() + 50)
     ax.set_ylim(-0.1, 0.25)
     ax.set_xlabel("Amino Acid Position", fontsize=12)
-    ax.set_ylabel("(Case / Control)", fontsize=12)
+    ax.set_ylabel("Variant Counts (Het / Hom)", fontsize=12)
     ax.set_yticks([])
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -181,7 +252,11 @@ def update_plot(selected_file):
     handles = [plt.Line2D([0], [0], color=color, linewidth=5, label=exon) for exon, color in exon_legend.items()]
     ax.legend(handles=handles, title="Exons", loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8)
 
-    plt.title("Variants Counts in Case/Control", fontsize=14)
+    plt.title(f"Variants in {selected_cohort.replace('_', ' ').title()}", fontsize=14)
+
+    if selected_cohort in legend_map:
+        plt.figtext(0.5, -0.1, legend_map[selected_cohort], wrap=True, ha="center", fontsize=6)
+
 
     buf = io.BytesIO()
     plt.savefig(buf, format="png", bbox_inches="tight")

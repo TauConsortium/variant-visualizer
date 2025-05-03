@@ -1,36 +1,18 @@
-"""
-extract_variants.py
-
-Extracts exonic nonsynonymous SNV variants for specified isoforms from a tab-delimited annotated TSV file
-and exports per-gene variant files.
-
-Usage:
-    python extract_variants.py \
-        --input raw_data/redlat/redlat.genes.chr.counts.hg38_multianno.tsv \
-        --isoforms '{"PSEN1": "NM_000021", "PSEN2": "NM_000447", "TARDBP": "NM_007375", "MAPT": "NM_005910"}' \
-        --output-dir data/custom
-"""
 import argparse
 import pandas as pd
 import json
 import os
 import sys
 
+def parse_counts(cell):
+    try:
+        parts = cell.split("/")
+        return int(parts[0]), int(parts[1])  # het, hom
+    except (AttributeError, IndexError, ValueError):
+        return 0, 0
+
 def extract_variant(row, desired_isoforms):
     isoform_entries = row.get("AAChange.refGene", "").split(",")
-    all_affected = row.get("All_affected", "")
-    all_unaffected = row.get("All_unaffected", "")
-
-    # parse counts: expecting format "x/total"
-    try:
-        case_cnt = int(all_affected.split("/")[1])
-    except (IndexError, ValueError):
-        case_cnt = 0
-    try:
-        control_cnt = int(all_unaffected.split("/")[1])
-    except (IndexError, ValueError):
-        control_cnt = 0
-
     for entry in isoform_entries:
         parts = entry.split(":")
         if len(parts) < 4:
@@ -40,17 +22,14 @@ def extract_variant(row, desired_isoforms):
             continue
         if desired_isoforms[gene_name] != isoform_id:
             continue
-        # extract amino acid variant (strip 'p.' prefix if present)
         var = parts[-1]
         if var.startswith("p."):
             var = var[2:]
         aa_number = var[1:-1] if len(var) > 2 else ""
-        return var, aa_number, case_cnt, control_cnt, exon
-
-    return None, None, 0, 0, ""
+        return var, aa_number, exon
+    return None, None, ""
 
 def load_isoforms(mapping_str):
-    # load JSON mapping from string or file path
     if os.path.isfile(mapping_str):
         with open(mapping_str) as f:
             return json.load(f)
@@ -61,7 +40,7 @@ def load_isoforms(mapping_str):
         sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description="Extract exonic nonsynonymous SNV variants for specified isoforms.")
+    parser = argparse.ArgumentParser(description="Extract SNVs with cohort-level counts for specified isoforms.")
     parser.add_argument("-i", "--input", required=True, help="Input TSV file path")
     parser.add_argument("-m", "--isoforms", required=True, help="JSON mapping or path to JSON file of gene to isoform IDs")
     parser.add_argument("-o", "--output-dir", default="data", help="Directory to write output files")
@@ -70,12 +49,7 @@ def main():
     args = parser.parse_args()
 
     desired_isoforms = load_isoforms(args.isoforms)
-
-    df = pd.read_csv(args.input, sep="\t", low_memory=False)
-    
-    # Fill missing All_affected and All_unaffected with "0/0/0"
-    df["All_affected"] = df["All_affected"].fillna("0/0/0")
-    df["All_unaffected"] = df["All_unaffected"].fillna("0/0/0")
+    df = pd.read_csv(args.input, sep="\t", low_memory=False).fillna("0/0/0")
 
     df_filtered = df[
         (df.get("Func.refGene") == args.func_ref) &
@@ -86,25 +60,56 @@ def main():
         print("No rows after filtering. Check filter criteria.", file=sys.stderr)
         sys.exit(1)
 
-    # apply variant extraction
-    variants = df_filtered.apply(lambda row: extract_variant(row, desired_isoforms), axis=1, result_type="expand")
-    variants.columns = ["variant", "AA", "case", "control", "exon"]
+    records = []
+    for _, row in df_filtered.iterrows():
+        variant, aa, exon = extract_variant(row, desired_isoforms)
+        if variant is None:
+            continue
 
-    df_filtered = pd.concat([df_filtered, variants], axis=1)
-    df_filtered = df_filtered.dropna(subset=["AA"])
-    df_filtered["case"] = df_filtered["case"].astype(int)
-    df_filtered["control"] = df_filtered["control"].astype(int)
+        gene = row["Gene.refGene"]
 
+        het_case, hom_case = parse_counts(row["All_affected"])
+        het_control, hom_control = parse_counts(row["All_unaffected"])
+
+        ad_het, ad_hom = parse_counts(row["AD"])
+        eod_het, eod_hom = parse_counts(row["EOD"])
+        ftld_het, ftld_hom = parse_counts(row["FTLD-MND"])
+        aao65_het, aao65_hom = parse_counts(row["Neurodegeneration_aao<65"])
+        healthy_het, healthy_hom = parse_counts(row["Healthy>70"])
+
+        records.append({
+            "Gene.refGene": gene,
+            "variant": variant,
+            "AA": aa,
+            "exon": exon,
+            "het_case": het_case,
+            "hom_case": hom_case,
+            "het_control": het_control,
+            "hom_control": hom_control,
+            "ad_het": ad_het,
+            "ad_hom": ad_hom,
+            "eod_het": eod_het,
+            "eod_hom": eod_hom,
+            "ftld_het": ftld_het,
+            "ftld_hom": ftld_hom,
+            "aao65_het": aao65_het,
+            "aao65_hom": aao65_hom,
+            "healthy_het": healthy_het,
+            "healthy_hom": healthy_hom,
+        })
+
+    result_df = pd.DataFrame(records)
     os.makedirs(args.output_dir, exist_ok=True)
+
     for gene in desired_isoforms:
-        gene_df = df_filtered[df_filtered.get("Gene.refGene") == gene]
+        gene_df = result_df[result_df["Gene.refGene"] == gene]
         if gene_df.empty:
             print(f"No variants found for {gene}")
             continue
-        out_file = os.path.join(args.output_dir, f"{gene}_variants.txt")
-        cols = ["Gene.refGene", "AA", "variant", "case", "control", "exon"]
-        gene_df.to_csv(out_file, sep="\t", index=False, columns=cols)
-        print(f"Wrote {len(gene_df)} records to {out_file}")
+
+        out_path = os.path.join(args.output_dir, f"{gene}")
+        gene_df.to_csv(out_path, sep="\t", index=False)
+        print(f"Wrote {len(gene_df)} records to {out_path}")
 
 if __name__ == "__main__":
     main()

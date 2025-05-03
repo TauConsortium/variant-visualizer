@@ -1,8 +1,0 @@
-Gene.refGene	AA	variant	case	control	exon
-FUS	16	A16V	0	1	exon3
-FUS	18	P18A	0	1	exon3
-FUS	63	N63S	1	0	exon3
-FUS	134	S134N	6	2	exon5
-FUS	161	N161H	14	2	exon5
-FUS	247	R247H	1	0	exon6
-FUS	478	Y478C	1	1	exon14

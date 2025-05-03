@@ -1,0 +1,11 @@
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld_het	ftld_hom	aao65_het	aao65_hom	healthy_het	healthy_hom
+FIG4	I41T	41	exon2	1	3	0	1	0	1	0	1	0	1	0	3	0	0
+FIG4	F101L	101	exon4	0	1	0	0	0	1	0	0	0	0	0	1	0	0
+FIG4	R141Q	141	exon4	0	0	0	1	0	0	0	0	0	0	0	0	0	0
+FIG4	P185A	185	exon6	0	1	0	0	0	1	0	0	0	0	0	1	0	0
+FIG4	T270A	270	exon8	0	6	0	0	0	4	0	1	0	1	0	5	0	0
+FIG4	E302K	302	exon9	0	1	0	0	0	0	0	0	0	0	0	0	0	0
+FIG4	M364L	364	exon10	3	110	3	34	1	51	2	11	0	25	3	74	3	7
+FIG4	R476C	476	exon13	0	1	0	0	0	1	0	0	0	0	0	1	0	0
+FIG4	V654A	654	exon18	48	280	20	100	24	121	3	34	11	64	32	178	7	28
+FIG4	P748S	748	exon20	0	2	0	0	0	0	0	0	0	2	0	1	0	0

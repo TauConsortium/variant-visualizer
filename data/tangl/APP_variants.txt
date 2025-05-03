@@ -1,6 +1,0 @@
-Gene.refGene	AA	variant	case	control	exon
-APP	614	S614G	5	0	exon14
-APP	449	E449K	3	0	exon11
-APP	414	E414K	1	0	exon10
-APP	170	M170I	1	2	exon5
-APP	107	T107I	1	0	exon3

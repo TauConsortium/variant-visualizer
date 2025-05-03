@@ -1,2 +1,0 @@
-Gene.refGene	AA	variant	case	control	exon
-DNAJC5	116	L116R	3	0	exon4
