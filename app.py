@@ -243,7 +243,13 @@ def update_plot(selected_file, selected_cohort):
     ax.set_xlim(0, variants["AA"].max() + 50)
     ax.set_ylim(-0.1, 0.25)
     ax.set_xlabel("Amino Acid Position", fontsize=12)
-    ax.set_ylabel("Variant Counts (Het / Hom)", fontsize=12)
+    y_label = (
+        "Carriers (Homozygous/Heterozygous)"
+        if selected_cohort in custom_titles
+        else "Variant Counts (Het / Hom)"
+    )
+    ax.set_ylabel(y_label, fontsize=12)
+
     ax.set_yticks([])
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -252,7 +258,16 @@ def update_plot(selected_file, selected_cohort):
     handles = [plt.Line2D([0], [0], color=color, linewidth=5, label=exon) for exon, color in exon_legend.items()]
     ax.legend(handles=handles, title="Exons", loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8)
 
-    plt.title(f"Variants in {selected_cohort.replace('_', ' ').title()}", fontsize=14)
+    custom_titles = {
+        "ad": "Genetic variants in the Alzheimer’s disease sub-cohort",
+        "eod": "Genetic variants in the Early Onset Dementia sub-cohort",
+        "ftld_mnd": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
+        "aao65": "Genetic variants in all the patients with dementia onset < 65 years",
+        "healthy70": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
+    }
+    title = custom_titles.get(selected_cohort, f"Variants in {selected_cohort.replace('_', ' ').title()}")
+    plt.title(title, fontsize=14)
+
 
     if selected_cohort in legend_map:
         plt.figtext(0.5, -0.1, legend_map[selected_cohort], wrap=True, ha="center", fontsize=6)
