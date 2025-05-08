@@ -17,13 +17,21 @@ server = app.server
 data_dir = "data"
 datasets = ["tangl"]
 cohort_categories = [
-    ("case_control", "Case / Control"),
+    ("case_control", "All Participants"),
     ("ad", "AD"),
     ("eod", "EOD"),
     ("ftld_mnd", "FTLD-MND"),
     ("aao65", "AAO < 65"),
     ("healthy70", "Healthy > 70"),
 ]
+
+custom_titles = {
+    "ad": "Genetic variants in the Alzheimer’s disease sub-cohort",
+    "eod": "Genetic variants in the Early Onset Dementia sub-cohort",
+    "ftld_mnd": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
+    "aao65": "Genetic variants in all the patients with dementia onset < 65 years",
+    "healthy70": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
+}
 
 legend_map = {
     "case_control": (
@@ -258,13 +266,6 @@ def update_plot(selected_file, selected_cohort):
     handles = [plt.Line2D([0], [0], color=color, linewidth=5, label=exon) for exon, color in exon_legend.items()]
     ax.legend(handles=handles, title="Exons", loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8)
 
-    custom_titles = {
-        "ad": "Genetic variants in the Alzheimer’s disease sub-cohort",
-        "eod": "Genetic variants in the Early Onset Dementia sub-cohort",
-        "ftld_mnd": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
-        "aao65": "Genetic variants in all the patients with dementia onset < 65 years",
-        "healthy70": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
-    }
     title = custom_titles.get(selected_cohort, f"Variants in {selected_cohort.replace('_', ' ').title()}")
     plt.title(title, fontsize=14)
 
