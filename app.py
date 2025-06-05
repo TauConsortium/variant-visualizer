@@ -41,29 +41,19 @@ legend_map = {
         "The dataset includes related individuals."
     ),
     "ad": (
-        "Homozygous / Heterozygous individuals with Alzheimer’s disease in the TANGL cohort. "
-        "It does not include carriers of pathogenic variants like PSEN1 E280A. "
-        "May include related individuals (n=280)."
+        "Includes the 378 participants of the AD cohort in the TANGL study. The dataset includes related individuals."
     ),
     "eod": (
-        "Homozygous / Heterozygous individuals with early onset dementia (not AD, FTD, Parkinson’s, or Lewy body). "
-        "It does not include carriers of pathogenic variants. "
-        "May include related individuals (n=67)."
+        "Includes the 74 participants of the AD cohort in the TANGL study. The dataset includes related individuals."
     ),
     "ftld_mnd": (
-        "Homozygous / Heterozygous individuals with FTD with or without Motor Neuron Syndrome (ALS, CBD, PSP). "
-        "It does not include carriers of pathogenic variants like MAPT P301L. "
-        "May include related individuals (n=157)."
+        "Includes the 193 participants of the FTLD-MND cohort in the TANGL study. The dataset includes related individuals."
     ),
     "aao65": (
-        "Homozygous / Heterozygous individuals from AD, FTLD-MND, and EOD cohorts "
-        "with age of onset ≤ 65. "
-        "Does not include carriers of pathogenic variants. "
-        "May include related individuals (n=396)."
+        "Includes the 484 patients diagnosed with AD, FTLD-MND or EOD at 65 years or younger."
     ),
     "healthy70": (
-        "Homozygous / Heterozygous individuals who are cognitively healthy at age 70 or older. "
-        "They are unrelated to each other and to other TANGL participants (n=76)."
+        "Includes 119 unrelated individuals with normal cognition and who are age 70 or older"
     )
 }
 
@@ -198,6 +188,13 @@ def update_plot(selected_file, selected_cohort):
         grouped_variants.append(cluster)
 
     for cluster in grouped_variants:
+        het_col = "het_case" if selected_cohort == "case_control" else f"{selected_cohort}_het"
+        hom_col = "hom_case" if selected_cohort == "case_control" else f"{selected_cohort}_hom"
+
+        # Skip cluster if all variants are 0/0
+        if not any((v.get(het_col, 0) + v.get(hom_col, 0)) > 0 for v in cluster):
+            continue
+
         x = sum(v["AA"] for v in cluster) / len(cluster)
         base_y = -0.07
         y = -0.03
@@ -218,7 +215,9 @@ def update_plot(selected_file, selected_cohort):
         hom_col = "hom_case" if selected_cohort == "case_control" else f"{selected_cohort}_hom"
 
         label = "\n".join([
-            f"{v['variant']} ({v.get(het_col, 0)} / {v.get(hom_col, 0)})" for v in cluster
+            f"{v['variant']} ({v.get(het_col, 0)} / {v.get(hom_col, 0)})"
+            for v in cluster
+            if (v.get(het_col, 0) + v.get(hom_col, 0)) > 0
         ])
         ax.text(x, y + len(cluster) * 0.003 + 0.01, label, rotation=90, ha="center", fontsize=8, color=color)
 
@@ -252,9 +251,7 @@ def update_plot(selected_file, selected_cohort):
     ax.set_ylim(-0.1, 0.25)
     ax.set_xlabel("Amino Acid Position", fontsize=12)
     y_label = (
-        "Carriers (Homozygous/Heterozygous)"
-        if selected_cohort in custom_titles
-        else "Variant Counts (Het / Hom)"
+        "Carriers (Hom/Het)"
     )
     ax.set_ylabel(y_label, fontsize=12)
 
