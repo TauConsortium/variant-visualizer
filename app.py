@@ -15,7 +15,7 @@ server = app.server
 
 # Path to the output directory
 data_dir = "data"
-datasets = ["tangl"]
+datasets = ["tangl", "redlat"]
 cohort_categories = [
     ("case_control", "All Participants"),
     ("ad", "AD"),

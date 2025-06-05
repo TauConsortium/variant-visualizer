@@ -61,10 +61,7 @@ python extract_variants.py \
 ## Running the App
 
 ```bash
-# Test locally
-python app.py
-
-# Deploy
+# Deploy/Run locally
 gunicorn app:server --bind 0.0.0.0:8050
 ```
 

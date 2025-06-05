@@ -1,9 +1,0 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld_het	ftld_hom	aao65_het	aao65_hom	healthy_het	healthy_hom
-GRN	R19W	19	exon2	0	12	0	1	0	1	0	1	0	5	0	7	0	0
-GRN	C139R	139	exon5	0	1	0	0	0	0	0	1	0	0	0	1	0	0
-GRN	G148R	148	exon5	0	1	0	0	0	1	0	0	0	0	0	1	0	0
-GRN	T182M	182	exon6	0	1	0	0	0	0	0	0	0	0	0	0	0	0
-GRN	R212Q	212	exon7	0	1	0	0	0	0	0	0	0	1	0	1	0	0
-GRN	R418Q	418	exon11	0	1	0	1	0	0	0	0	0	0	0	0	0	0
-GRN	R433Q	433	exon11	0	2	0	1	0	2	0	0	0	0	0	2	0	0
-GRN	G515A	515	exon12	0	6	0	0	0	3	0	0	0	1	0	4	0	0
