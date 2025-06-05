@@ -29,7 +29,7 @@ custom_titles = {
     "ad": "Genetic variants in the Alzheimer’s disease sub-cohort",
     "eod": "Genetic variants in the Early Onset Dementia sub-cohort",
     "ftld_mnd": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
-    "aao65": "Genetic variants in all the patients with dementia onset < 65 years",
+    "aao65": "Genetic variants in all the patients with early onset neurodegenerative illness < 65 years",
     "healthy70": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
 }
 
@@ -275,7 +275,7 @@ def update_plot(selected_file, selected_cohort):
 
 
     buf = io.BytesIO()
-    plt.savefig(buf, format="png", bbox_inches="tight")
+    plt.savefig(buf, format="png", bbox_inches="tight", dpi=300)
     plt.close(fig)
     buf.seek(0)
     encoded_image = base64.b64encode(buf.read()).decode("utf-8")
