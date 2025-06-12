@@ -34,28 +34,26 @@ custom_titles = {
 }
 
 legend_map = {
-    "case_control": (
-        "Cases represents all affected individuals in the TANGL cohort. "
-        "It includes carriers of pathogenic variants like PSEN1 E280A. (n=646)\n"
-        "Controls represents unaffected individuals in the TANGL cohort. (n=254)\n"
-        "The dataset includes related individuals."
-    ),
-    "ad": (
-        "Includes the 378 participants of the AD cohort in the TANGL study. The dataset includes related individuals."
-    ),
-    "eod": (
-        "Includes the 74 participants of the AD cohort in the TANGL study. The dataset includes related individuals."
-    ),
-    "ftld-mnd": (
-        "Includes the 193 participants of the FTLD-MND cohort in the TANGL study. The dataset includes related individuals."
-    ),
-    "aao": (
-        "Includes the 484 patients diagnosed with AD, FTLD-MND or EOD at 65 years or younger."
-    ),
-    "healthy": (
-        "Includes 119 unrelated individuals with normal cognition and who are age 70 or older"
-    )
+    "tangl": {
+        "case_control": (
+            "Cases represents all affected individuals in the TANGL cohort. "
+            "It includes carriers of pathogenic variants like PSEN1 E280A. (n=646)\n"
+            "Controls represents unaffected individuals in the TANGL cohort. (n=254)\n"
+            "The dataset includes related individuals."
+        ),
+        "ad": "Includes the 378 participants of the AD cohort in the TANGL study. The dataset includes related individuals.",
+        "eod": "Includes the 74 participants of the EOD cohort in the TANGL study. The dataset includes related individuals.",
+        "ftld-mnd": "Includes the 193 participants of the FTLD-MND cohort in the TANGL study. The dataset includes related individuals.",
+        "aao": "Includes the 484 patients diagnosed with AD, FTLD-MND or EOD at 65 years or younger.",
+        "healthy": "Includes 119 unrelated individuals with normal cognition and who are age 70 or older."
+    },
+    "redlat": {
+        "ad": "Includes the 843 participants with whole genome or exome from the AD cohort in the ReDLat study. The dataset includes related individuals.",
+        "ftld-mnd": "Includes the 272 participants with whole genome or exome from the FTD cohort in the ReDLat study. The dataset includes related individuals.",
+        "healthy": "Includes 548 asymptomatic participants with whole genome or exome from the ReDLat study. The dataset includes related individuals."
+    }
 }
+
 
 
 # Layout of the app
@@ -176,9 +174,10 @@ def update_file_options(selected_dataset, uploaded_path):
 @app.callback(
     Output("plot-image", "src"),
     Input("file-dropdown", "value"),
-    Input("cohort-tabs", "value")
+    Input("cohort-tabs", "value"),
+    Input("dataset-tabs", "value")
 )
-def update_plot(selected_file, selected_cohort):
+def update_plot(selected_file, selected_cohort, selected_dataset):
     if not selected_file:
         return ""
 
@@ -287,8 +286,15 @@ def update_plot(selected_file, selected_cohort):
     plt.title(title, fontsize=14)
 
 
-    if selected_cohort in legend_map:
-        plt.figtext(0.5, -0.1, legend_map[selected_cohort], wrap=True, ha="center", fontsize=6)
+    if selected_dataset in legend_map and selected_cohort in legend_map[selected_dataset]:
+        plt.figtext(
+            0.5,
+            -0.1,
+            legend_map[selected_dataset][selected_cohort],
+            wrap=True,
+            ha="center",
+            fontsize=6
+        )
 
 
     buf = io.BytesIO()
@@ -298,3 +304,7 @@ def update_plot(selected_file, selected_cohort):
     encoded_image = base64.b64encode(buf.read()).decode("utf-8")
 
     return f"data:image/png;base64,{encoded_image}"
+
+# Testing locally with `python app.py`
+# if __name__ == "__main__":
+#     app.run_server(debug=True)
