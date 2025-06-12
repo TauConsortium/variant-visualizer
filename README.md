@@ -38,6 +38,12 @@ python extract_variants.py \
  --isoforms '{"ABCA7": "NM_019112", "ADAM10": "NM_001110", "ANXA11": "NM_001157", "APOE": "NM_000041", "APP": "NM_000484", "C9ORF72": "NM_001256054", "CHMP2B": "NM_014043", "CSF1R": "NM_005211", "DNAJC5": "NM_025219", "FIG4": "NM_014845", "FOXL2": "NM_023067", "FUS": "NM_001170634", "GJB2": "NM_004004", "GRN": "NM_002087", "HNRNPA2B1": "NM_002137", "KIF1A": "NM_004321", "LRRK2": "NM_198578", "MAPT": "NM_005910", "NOTCH3": "NM_000435", "PSEN1": "NM_000021", "PSEN2": "NM_000447", "SCN1A": "NM_001165963", "SOD1": "NM_000454", "SQSTM1": "NM_003900", "TARDBP": "NM_007375", "TBK1": "NM_013254", "TREM2": "NM_018965", "UBQLN2": "NM_013444", "VCP": "NM_007126"}' \
  --output-dir data/tangl
 
+# Extract RedLat variants
+ python extract_variants.py \
+    --input raw_data/redlat/redlat.tsv \
+    --isoforms '{"PSEN1": "NM_000021", "PSEN2": "NM_000447", "TARDBP": "NM_007375", "MAPT": "NM_005910"}' \
+    --output-dir data/redlat
+
 ```
 
 ---

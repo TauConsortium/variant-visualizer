@@ -1,7 +1,0 @@
-Gene.refGene	AA	variant	case	control	exon
-TARDBP	50	C50S	0	0	exon2
-TARDBP	259	N259S	0	0	exon6
-TARDBP	294	G294V	0	0	exon6
-TARDBP	383	I383V	0	4	exon6
-TARDBP	385	W385L	0	0	exon6
-TARDBP	414	M414I	0	0	exon6

@@ -20,17 +20,17 @@ cohort_categories = [
     ("case_control", "All Participants"),
     ("ad", "AD"),
     ("eod", "EOD"),
-    ("ftld_mnd", "FTLD-MND"),
+    ("ftld", "FTLD-MND"),
     ("aao65", "AAO < 65"),
-    ("healthy70", "Healthy > 70"),
+    ("healthy", "Healthy > 70"),
 ]
 
 custom_titles = {
     "ad": "Genetic variants in the Alzheimer’s disease sub-cohort",
     "eod": "Genetic variants in the Early Onset Dementia sub-cohort",
-    "ftld_mnd": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
+    "ftld": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
     "aao65": "Genetic variants in all the patients with early onset neurodegenerative illness < 65 years",
-    "healthy70": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
+    "healthy": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
 }
 
 legend_map = {
@@ -46,13 +46,13 @@ legend_map = {
     "eod": (
         "Includes the 74 participants of the AD cohort in the TANGL study. The dataset includes related individuals."
     ),
-    "ftld_mnd": (
+    "ftld": (
         "Includes the 193 participants of the FTLD-MND cohort in the TANGL study. The dataset includes related individuals."
     ),
     "aao65": (
         "Includes the 484 patients diagnosed with AD, FTLD-MND or EOD at 65 years or younger."
     ),
-    "healthy70": (
+    "healthy": (
         "Includes 119 unrelated individuals with normal cognition and who are age 70 or older"
     )
 }
@@ -67,12 +67,8 @@ app.layout = html.Div([
         style={"marginBottom": "20px", "fontSize": "12px", "height": "36px"}
     ),
 
-    dcc.Tabs(
-        id="cohort-tabs",
-        value="case_control",
-        children=[dcc.Tab(label=label, value=val) for val, label in cohort_categories],
-        style={"marginBottom": "20px", "fontSize": "12px", "height": "36px"}
-    ),
+    html.Div(id="cohort-tab-container"),
+
 
     html.Div(id="upload-container"),
     dcc.Store(id="custom-file-store"),
@@ -91,6 +87,30 @@ app.layout = html.Div([
         html.P("ReDLat: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... & Yokoyama, J. S. (2024). Genetic Contributions to Alzheimer\u2019s Disease and Frontotemporal Dementia in Admixed Latin American Populations. *medRxiv*.")
     ], style={"marginTop": "40px", "padding": "10px", "borderTop": "1px solid #ccc", "fontSize": "16px"})
 ])
+
+@app.callback(
+    Output("cohort-tab-container", "children"),
+    Input("dataset-tabs", "value")
+)
+def update_cohort_tabs(selected_dataset):
+    if selected_dataset == "redlat":
+        allowed = {"ad", "ftld", "healthy"}
+    else:
+        allowed = {val for val, _ in cohort_categories}
+
+    filtered_tabs = [
+        dcc.Tab(label=label, value=val)
+        for val, label in cohort_categories if val in allowed
+    ]
+
+    # Set default tab to first in filtered list
+    return dcc.Tabs(
+        id="cohort-tabs",
+        value=filtered_tabs[0].value if filtered_tabs else None,
+        children=filtered_tabs,
+        style={"marginBottom": "20px", "fontSize": "12px", "height": "36px"}
+    )
+
 
 @app.callback(
     Output("upload-container", "children"),

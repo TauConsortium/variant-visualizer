@@ -72,9 +72,9 @@ def main():
         het_control, hom_control = parse_counts(row["All_unaffected"])
 
         ad_het, ad_hom = parse_counts(row["AD"])
-        eod_het, eod_hom = parse_counts(row["EOD"])
+        # eod_het, eod_hom = parse_counts(row["EOD"])
         ftld_het, ftld_hom = parse_counts(row["FTLD-MND"])
-        aao65_het, aao65_hom = parse_counts(row["Neurodegeneration_aao<65"])
+        # aao65_het, aao65_hom = parse_counts(row["Neurodegeneration_aao<65"])
         healthy_het, healthy_hom = parse_counts(row["Healthy>70"])
 
         records.append({
@@ -88,12 +88,12 @@ def main():
             "hom_control": hom_control,
             "ad_het": ad_het,
             "ad_hom": ad_hom,
-            "eod_het": eod_het,
-            "eod_hom": eod_hom,
+            # "eod_het": eod_het,
+            # "eod_hom": eod_hom,
             "ftld_het": ftld_het,
             "ftld_hom": ftld_hom,
-            "aao65_het": aao65_het,
-            "aao65_hom": aao65_hom,
+            # "aao65_het": aao65_het,
+            # "aao65_hom": aao65_hom,
             "healthy_het": healthy_het,
             "healthy_hom": healthy_hom,
         })

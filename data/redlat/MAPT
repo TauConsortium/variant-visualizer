@@ -1,0 +1,15 @@
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	ftld_het	ftld_hom	healthy_het	healthy_hom
+MAPT	T30N	30	exon2	0	0	0	1	0	0	0	1	0	0
+MAPT	P59L	59	exon3	0	0	0	0	0	0	0	0	0	0
+MAPT	A72T	72	exon3	0	0	0	0	0	0	0	0	0	0
+MAPT	G107V	107	exon5	0	0	0	1	0	1	0	0	0	0
+MAPT	I151T	151	exon7	0	0	0	5	0	3	0	2	0	0
+MAPT	A152T	152	exon7	0	0	0	2	0	1	0	1	0	0
+MAPT	A178T	178	exon7	0	0	0	15	0	6	0	9	0	0
+MAPT	R209C	209	exon8	0	0	0	2	0	2	0	0	0	0
+MAPT	R209H	209	exon8	0	0	0	0	0	0	0	0	0	0
+MAPT	T220P	220	exon8	0	0	0	18	0	15	0	3	0	0
+MAPT	R221P	221	exon8	0	0	0	7	0	6	0	1	0	0
+MAPT	L266V	266	exon8	0	0	0	1	0	0	0	1	0	0
+MAPT	V300I	300	exon9	0	0	0	2	0	2	0	0	0	0
+MAPT	T427M	427	exon12	0	0	0	1	0	1	0	0	0	0
