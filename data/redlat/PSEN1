@@ -1,4 +1,4 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	ftld_het	ftld_hom	healthy_het	healthy_hom
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	ftld-mnd_het	ftld-mnd_hom	healthy_het	healthy_hom
 PSEN1	R35W	35	exon4	0	0	0	2	0	1	0	1	0	0
 PSEN1	H38Q	38	exon4	0	0	0	3	0	2	0	1	0	0
 PSEN1	D40N	40	exon4	0	0	0	2	0	2	0	0	0	0

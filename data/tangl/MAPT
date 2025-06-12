@@ -1,7 +1,7 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld_het	ftld_hom	aao65_het	aao65_hom	healthy_het	healthy_hom
-MAPT	I151T	151	exon7	0	2	0	2	0	1	0	0	0	1	0	1	0	1
-MAPT	A152T	152	exon7	0	3	0	1	0	0	0	0	0	3	0	2	0	1
-MAPT	A178T	178	exon7	0	16	0	4	0	16	0	0	0	0	0	10	0	2
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld-mnd_het	ftld-mnd_hom	aao_het	aao_hom	healthy_het	healthy_hom
+MAPT	I151T	151	exon7	0	2	0	2	1	0	0	0	1	0	1	0	0	1
+MAPT	A152T	152	exon7	0	3	0	1	0	0	0	0	3	0	2	0	0	1
+MAPT	A178T	178	exon7	0	16	0	4	16	0	0	0	0	0	10	0	0	2
 MAPT	V300I	300	exon9	0	0	0	1	0	0	0	0	0	0	0	0	0	1
-MAPT	P301L	301	exon9	0	2	0	0	0	0	0	0	0	2	0	1	0	0
-MAPT	P397S	397	exon12	0	10	0	0	0	0	0	0	0	10	0	4	0	0
+MAPT	P301L	301	exon9	0	2	0	0	0	0	0	0	2	0	1	0	0	0
+MAPT	P397S	397	exon12	0	10	0	0	0	0	0	0	10	0	4	0	0	0

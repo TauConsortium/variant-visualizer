@@ -1,4 +1,4 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	ftld_het	ftld_hom	healthy_het	healthy_hom
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	ftld-mnd_het	ftld-mnd_hom	healthy_het	healthy_hom
 MAPT	T30N	30	exon2	0	0	0	1	0	0	0	1	0	0
 MAPT	P59L	59	exon3	0	0	0	0	0	0	0	0	0	0
 MAPT	A72T	72	exon3	0	0	0	0	0	0	0	0	0	0

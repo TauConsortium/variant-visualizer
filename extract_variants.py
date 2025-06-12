@@ -11,6 +11,16 @@ def parse_counts(cell):
     except (AttributeError, IndexError, ValueError):
         return 0, 0
 
+def parse_txt_het_hom(affected, unaffected):
+    try:
+        aff_parts = [int(x) for x in affected.split("/")]
+        unaff_parts = [int(x) for x in unaffected.split("/")]
+        het = aff_parts[0] + aff_parts[1]
+        hom = unaff_parts[0] + unaff_parts[1]
+        return het, hom
+    except (AttributeError, IndexError, ValueError):
+        return 0, 0
+
 def extract_variant(row, desired_isoforms):
     isoform_entries = row.get("AAChange.refGene", "").split(",")
     for entry in isoform_entries:
@@ -68,35 +78,32 @@ def main():
 
         gene = row["Gene.refGene"]
 
-        het_case, hom_case = parse_counts(row["All_affected"])
-        het_control, hom_control = parse_counts(row["All_unaffected"])
-
-        ad_het, ad_hom = parse_counts(row["AD"])
-        # eod_het, eod_hom = parse_counts(row["EOD"])
-        ftld_het, ftld_hom = parse_counts(row["FTLD-MND"])
-        # aao65_het, aao65_hom = parse_counts(row["Neurodegeneration_aao<65"])
-        healthy_het, healthy_hom = parse_counts(row["Healthy>70"])
-
-        records.append({
+        record = {
             "Gene.refGene": gene,
             "variant": variant,
             "AA": aa,
             "exon": exon,
-            "het_case": het_case,
-            "hom_case": hom_case,
-            "het_control": het_control,
-            "hom_control": hom_control,
-            "ad_het": ad_het,
-            "ad_hom": ad_hom,
-            # "eod_het": eod_het,
-            # "eod_hom": eod_hom,
-            "ftld_het": ftld_het,
-            "ftld_hom": ftld_hom,
-            # "aao65_het": aao65_het,
-            # "aao65_hom": aao65_hom,
-            "healthy_het": healthy_het,
-            "healthy_hom": healthy_hom,
-        })
+        }
+
+        # Keep original parsing for All_affected and All_unaffected
+        het_case, hom_case = parse_counts(row["All_affected"])
+        het_control, hom_control = parse_counts(row["All_unaffected"])
+        record["het_case"] = het_case
+        record["hom_case"] = hom_case
+        record["het_control"] = het_control
+        record["hom_control"] = hom_control
+
+        # Parse any other txt.affected/unaffected columns
+        for col in df.columns:
+            if col.endswith(".txt.affected"):
+                base = col.replace(".txt.affected", "")
+                unaffected_col = base + ".txt.unaffected"
+                if unaffected_col in df.columns:
+                    het, hom = parse_txt_het_hom(row[col], row[unaffected_col])
+                    record[f"{base}_het"] = het
+                    record[f"{base}_hom"] = hom
+
+        records.append(record)
 
     result_df = pd.DataFrame(records)
     os.makedirs(args.output_dir, exist_ok=True)

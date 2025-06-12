@@ -20,16 +20,16 @@ cohort_categories = [
     ("case_control", "All Participants"),
     ("ad", "AD"),
     ("eod", "EOD"),
-    ("ftld", "FTLD-MND"),
-    ("aao65", "AAO < 65"),
+    ("ftld-mnd", "FTLD-MND"),
+    ("aao", "AAO < 65"),
     ("healthy", "Healthy > 70"),
 ]
 
 custom_titles = {
     "ad": "Genetic variants in the Alzheimer’s disease sub-cohort",
     "eod": "Genetic variants in the Early Onset Dementia sub-cohort",
-    "ftld": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
-    "aao65": "Genetic variants in all the patients with early onset neurodegenerative illness < 65 years",
+    "ftld-mnd": "Genetic variants in the Frontotemporal Dementia and Motor Neuron Disease  sub-cohort",
+    "aao": "Genetic variants in all the patients with early onset neurodegenerative illness < 65 years",
     "healthy": "Genetic variants in all the cognitively healthy individuals aged 70 and older"
 }
 
@@ -46,10 +46,10 @@ legend_map = {
     "eod": (
         "Includes the 74 participants of the AD cohort in the TANGL study. The dataset includes related individuals."
     ),
-    "ftld": (
+    "ftld-mnd": (
         "Includes the 193 participants of the FTLD-MND cohort in the TANGL study. The dataset includes related individuals."
     ),
-    "aao65": (
+    "aao": (
         "Includes the 484 patients diagnosed with AD, FTLD-MND or EOD at 65 years or younger."
     ),
     "healthy": (
@@ -94,7 +94,7 @@ app.layout = html.Div([
 )
 def update_cohort_tabs(selected_dataset):
     if selected_dataset == "redlat":
-        allowed = {"ad", "ftld", "healthy"}
+        allowed = {"ad", "ftld-mnd", "healthy"}
     else:
         allowed = {val for val, _ in cohort_categories}
 

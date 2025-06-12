@@ -1,3 +1,3 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld_het	ftld_hom	aao65_het	aao65_hom	healthy_het	healthy_hom
-CHMP2B	I29V	29	exon2	0	1	0	0	0	0	0	0	0	1	0	1	0	0
-CHMP2B	S187N	187	exon6	0	13	0	1	0	11	0	1	0	1	0	7	0	1
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld-mnd_het	ftld-mnd_hom	aao_het	aao_hom	healthy_het	healthy_hom
+CHMP2B	I29V	29	exon2	0	1	0	0	0	0	0	0	1	0	1	0	0	0
+CHMP2B	S187N	187	exon6	0	13	0	1	11	0	1	0	1	0	7	0	0	1

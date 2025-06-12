@@ -1,8 +1,8 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld_het	ftld_hom	aao65_het	aao65_hom	healthy_het	healthy_hom
+Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld-mnd_het	ftld-mnd_hom	aao_het	aao_hom	healthy_het	healthy_hom
 FUS	A16V	16	exon3	0	0	0	1	0	0	0	0	0	0	0	0	0	1
 FUS	P18A	18	exon3	0	0	0	1	0	0	0	0	0	0	0	0	0	0
-FUS	N63S	63	exon3	0	1	0	0	0	0	0	0	0	1	0	1	0	0
-FUS	S134N	134	exon5	0	6	0	2	0	3	0	0	0	3	0	5	0	0
-FUS	N161H	161	exon5	0	14	0	2	0	5	0	3	0	6	0	11	0	0
-FUS	R247H	247	exon6	0	1	0	0	0	0	0	0	0	1	0	1	0	0
-FUS	Y478C	478	exon14	0	1	0	1	0	1	0	0	0	0	0	1	0	1
+FUS	N63S	63	exon3	0	1	0	0	0	0	0	0	1	0	1	0	0	0
+FUS	S134N	134	exon5	0	6	0	2	3	0	0	0	3	0	5	0	0	0
+FUS	N161H	161	exon5	0	14	0	2	5	0	3	0	6	0	11	0	0	0
+FUS	R247H	247	exon6	0	1	0	0	0	0	0	0	1	0	1	0	0	0
+FUS	Y478C	478	exon14	0	1	0	1	1	0	0	0	0	0	1	0	0	1
