@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/943586959.svg)](https://doi.org/10.5281/zenodo.15652735)
+
 # Variant Visualizer
 
 A Dash-based web application to visualize case/control variant counts. You may generate graphs from our predefined datasets or upload custom `.txt` files yourself.
