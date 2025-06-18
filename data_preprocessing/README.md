@@ -24,9 +24,7 @@ You must provide the following arguments when running the script:
 * `--annovar_database`
   Provide the path to the directory containing the ANNOVAR database (e.g., `humandb`).
 
----
-
-### Optional Arguments
+#### Optional Arguments
 
 * `--cohorts`
   Provide a file listing cohort names, one per line.
@@ -58,7 +56,6 @@ You must provide the following arguments when running the script:
   If this flag is included, intermediate files (such as `.plink`, `.geno`, `.frqx`) will be **preserved**.
   By default, the script will delete them after it finishes.
 
----
 
 ### Example Usage
 
@@ -73,7 +70,6 @@ bash count-variation.sh \
 
 If you omit the `--keep-intermediates` flag, the script will clean up intermediate files automatically.
 
----
 
 ### Output
 
