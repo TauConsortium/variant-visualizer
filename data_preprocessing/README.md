@@ -87,7 +87,7 @@ You must provide the following arguments when running the script:
 ### Example Usage
 
 ```bash
-bash script.sh \
+bash count-variation.sh \
   --vcf_file genome_exome_redlat \
   --annovar /home/acostauribe/bin/table_annovar.pl \
   --annovar_database_PATH /home/acostauribe/bin/annovar/humandb/ \
