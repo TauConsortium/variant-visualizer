@@ -30,7 +30,7 @@ You must provide the following arguments when running the script:
   Example:
 
   ```bash
-  --annovar /home/acostauribe/bin/table_annovar.pl
+  --annovar /home/usr/bin/table_annovar.pl
   ```
 
 * `--annovar_database_PATH`
@@ -39,7 +39,7 @@ You must provide the following arguments when running the script:
   Example:
 
   ```bash
-  --annovar_database_PATH /home/acostauribe/bin/annovar/humandb/
+  --annovar_database_PATH /home/usr/bin/annovar/humandb/
   ```
 
 ---
@@ -103,9 +103,4 @@ If you omit the `--keep-intermediates` flag, the script will clean up intermedia
 
 * A tab-delimited file with annotated variants and their genotype counts across all samples
 * If cohort files are provided, additional columns will include counts for each subgroup
-
----
-
-Let me know if you'd like this printed by a `--help` flag or included in a separate documentation file.
-
 
