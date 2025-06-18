@@ -33,13 +33,13 @@ You must provide the following arguments when running the script:
   --annovar /home/usr/bin/table_annovar.pl
   ```
 
-* `--annovar_database_PATH`
+* `--annovar_database`
   Provide the path to the directory containing the ANNOVAR database (e.g., `humandb`).
 
   Example:
 
   ```bash
-  --annovar_database_PATH /home/usr/bin/annovar/humandb/
+  --annovar_database /home/usr/bin/annovar/humandb/
   ```
 
 ---
@@ -89,8 +89,8 @@ You must provide the following arguments when running the script:
 ```bash
 bash count-variation.sh \
   --vcf_file genome_exome_redlat \
-  --annovar /home/acostauribe/bin/table_annovar.pl \
-  --annovar_database_PATH /home/acostauribe/bin/annovar/humandb/ \
+  --annovar /home/usr/bin/table_annovar.pl \
+  --annovar_database_PATH /home/usr/bin/annovar/humandb/ \
   --cohorts cohorts-redlat.txt \
   --keep-intermediates
 ```
