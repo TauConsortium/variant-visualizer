@@ -16,8 +16,8 @@ You must provide the following arguments when running the script:
 * `--vcf_file`
   Specify the **base path** to the VCF file **(do not include `.vcf` or `.vcf.gz`)**.
   The file should contain the regions and samples you want to analyze.
-  It must be aligned to the `hg38` reference genome and preprocessed (e.g., normalized using `bcftools norm`).
-
+  It must be properly aligned to the `hg38` reference genome and normalized
+  
   Example:
 
   ```bash
