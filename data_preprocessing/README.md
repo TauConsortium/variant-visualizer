@@ -17,30 +17,12 @@ You must provide the following arguments when running the script:
   Specify the **base path** to the VCF file **(do not include `.vcf` or `.vcf.gz`)**.
   The file should contain the regions and samples you want to analyze.
   It must be properly aligned to the `hg38` reference genome and normalized
-  
-  Example:
-
-  ```bash
-  --vcf_file genome_exome_redlat
-  ```
 
 * `--annovar`
   Provide the full path to the ANNOVAR script (`table_annovar.pl`).
 
-  Example:
-
-  ```bash
-  --annovar /home/usr/bin/table_annovar.pl
-  ```
-
 * `--annovar_database`
   Provide the path to the directory containing the ANNOVAR database (e.g., `humandb`).
-
-  Example:
-
-  ```bash
-  --annovar_database /home/usr/bin/annovar/humandb/
-  ```
 
 ---
 
@@ -49,12 +31,6 @@ You must provide the following arguments when running the script:
 * `--cohorts`
   Provide a file listing cohort names, one per line.
   This allows subsetting the dataset to analyze variation within each group.
-
-  Example:
-
-  ```bash
-  --cohorts cohorts-redlat.txt
-  ```
 
   The cohort file should look like:
 
