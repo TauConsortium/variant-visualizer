@@ -4,7 +4,7 @@
 
 A Dash-based web application designed to visualize and compare allelic counts in selected genes across multiple cohorts. \
 We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL and ReDLat cohorts. \
-You can see it in action [here](https://doi.org/10.5062/F4BR8QFB))
+You can see it in action [here](https://doi.org/10.5062/F4BR8QFB)
 
 ![plot](assets/image.png)
 
