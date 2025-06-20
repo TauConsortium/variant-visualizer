@@ -2,7 +2,7 @@
 
 # Variant Visualizer
 
-A Dash-based web application to visualize case/control variant counts. You may generate graphs from our predefined datasets or upload custom `.txt` files yourself.
+A Dash-based web application to visualize case/control variant counts. You may generate graphs from our predefined datasets or upload custom `.txt` files yourself. We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL and ReDLat cohorts
 
 ![plot](assets/image.png)
 
