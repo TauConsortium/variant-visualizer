@@ -1,0 +1,9 @@
+Gene.refGene	variant	AA	exon	all.Hom_A1	all.Het	ad.Hom_A1	ad.Het	ftld-mnd.Hom_A1	ftld-mnd.Het	eod.Hom_A1	eod.Het	aao.Hom_A1	aao.Het	healthy.Hom_A1	healthy.Het
+MAPT	I151T	151	7	0	4	0	1	0	1	0	0	0	1	0	1
+MAPT	A152T	152	7	0	4	0	0	0	3	0	0	0	2	0	1
+MAPT	A178T	178	7	0	20	0	16	0	0	0	0	0	10	0	2
+MAPT	T220P	220	8	0	3	0	1	0	1	0	0	0	1	0	0
+MAPT	R221P	221	8	0	1	0	0	0	0	0	0	0	0	0	0
+MAPT	V300I	300	9	0	1	0	0	0	0	0	0	0	0	0	1
+MAPT	P301L	301	9	0	2	0	0	0	2	0	0	0	1	0	0
+MAPT	P397S	397	12	0	10	0	0	0	10	0	0	0	4	0	0

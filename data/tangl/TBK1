@@ -1,7 +1,0 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld-mnd_het	ftld-mnd_hom	aao_het	aao_hom	healthy_het	healthy_hom
-TBK1	D13G	13	exon2	0	1	0	0	1	0	0	0	0	0	1	0	0	0
-TBK1	H322Y	322	exon8	0	1	0	0	0	0	0	0	1	0	1	0	0	0
-TBK1	D407G	407	exon10	0	1	0	0	1	0	0	0	0	0	1	0	0	0
-TBK1	V464A	464	exon12	1	6	2	5	1	0	3	0	3	0	7	0	0	2
-TBK1	L508I	508	exon14	0	6	0	0	6	0	0	0	0	0	4	0	0	0
-TBK1	R573C	573	exon15	2	0	0	6	0	0	0	0	2	0	2	0	0	0

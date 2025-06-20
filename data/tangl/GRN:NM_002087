@@ -1,0 +1,10 @@
+Gene.refGene	variant	AA	exon	all.Hom_A1	all.Het	ad.Hom_A1	ad.Het	ftld-mnd.Hom_A1	ftld-mnd.Het	eod.Hom_A1	eod.Het	aao.Hom_A1	aao.Het	healthy.Hom_A1	healthy.Het
+GRN	R19W	19	2	0	13	0	1	0	10	0	1	0	10	0	0
+GRN	C139R	139	5	0	1	0	0	0	0	0	1	0	1	0	0
+GRN	G148R	148	5	0	1	0	1	0	0	0	0	0	1	0	0
+GRN	T182M	182	6	0	1	0	1	0	0	0	0	0	0	0	0
+GRN	R212Q	212	7	0	1	0	0	0	1	0	0	0	1	0	0
+GRN	T310P	310	9	0	4	0	2	0	1	0	1	0	3	0	0
+GRN	R418Q	418	11	0	2	0	0	0	0	0	1	0	1	0	0
+GRN	R433Q	433	11	0	3	0	2	0	0	0	0	0	2	0	0
+GRN	G515A	515	12	0	6	0	5	0	1	0	0	0	6	0	0

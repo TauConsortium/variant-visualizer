@@ -220,9 +220,9 @@ awk -v OFS='\t' '{print $2, $3, $4, $5, $6, $7}' "${plink_file}.all.frqx" > "${p
 
 # Clean and standardize header names for downstream compatibility
 sed -i 's/SNP/ID/g' "${plink_file}.cohort-counts.txt"
-sed -i 's/C(HOM_A1)/Hom_A1/g' "${plink_file}.cohort-counts.txt"
-sed -i 's/C(HET)/Het/g' "${plink_file}.cohort-counts.txt"
-sed -i 's/C(HOM_A2)/Hom_A2/g' "${plink_file}.cohort-counts.txt"
+sed -i 's/C(HOM_A1)/all.Hom_A1/g' "${plink_file}.cohort-counts.txt"
+sed -i 's/C(HET)/all.Het/g' "${plink_file}.cohort-counts.txt"
+sed -i 's/C(HOM_A2)/all.Hom_A2/g' "${plink_file}.cohort-counts.txt"
 
 
 ## 3. Count SNPs in Sub-Cohorts

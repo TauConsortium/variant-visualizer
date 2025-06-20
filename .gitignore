@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+#MacOS
+#  This is a common file created by macOS to store custom attributes for files and folders
+#  It is not needed for Python projects and can be safely ignored.
+.DS_Store

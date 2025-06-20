@@ -1,0 +1,8 @@
+Gene.refGene	variant	AA	exon	all.Hom_A1	all.Het	ad.Hom_A1	ad.Het	ftld-mnd.Hom_A1	ftld-mnd.Het	eod.Hom_A1	eod.Het	aao.Hom_A1	aao.Het	healthy.Hom_A1	healthy.Het
+TBK1	D13G	13	2	0	1	0	1	0	0	0	0	0	1	0	0
+TBK1	H322Y	322	8	0	1	0	0	0	1	0	0	0	1	0	0
+TBK1	D407G	407	10	0	1	0	1	0	0	0	0	0	1	0	0
+TBK1	V421Cfs*27	421Cfs*2	11	0	2	0	1	0	1	0	0	0	2	0	0
+TBK1	V464A	464	12	3	11	0	1	1	2	0	3	1	6	0	2
+TBK1	L508I	508	14	0	6	0	6	0	0	0	0	0	4	0	0
+TBK1	R573C	573	15	2	6	0	0	2	0	0	0	2	0	0	0

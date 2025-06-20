@@ -35,20 +35,11 @@ These gene-named files can be generated using `extract_variants.py`:
 
 ```bash
 # Extract tangl variants
-python extract_variants.py \
- --input raw_data/tangl/tangl.tsv \
- --isoforms '{"ABCA7": "NM_019112", "ADAM10": "NM_001110", "ANXA11": "NM_001157", "APOE": "NM_000041", "APP": "NM_000484", "C9ORF72": "NM_001256054", "CHMP2B": "NM_014043", "CSF1R": "NM_005211", "DNAJC5": "NM_025219", "FIG4": "NM_014845", "FOXL2": "NM_023067", "FUS": "NM_001170634", "GJB2": "NM_004004", "GRN": "NM_002087", "HNRNPA2B1": "NM_002137", "KIF1A": "NM_004321", "LRRK2": "NM_198578", "MAPT": "NM_005910", "NOTCH3": "NM_000435", "PSEN1": "NM_000021", "PSEN2": "NM_000447", "SCN1A": "NM_001165963", "SOD1": "NM_000454", "SQSTM1": "NM_003900", "TARDBP": "NM_007375", "TBK1": "NM_013254", "TREM2": "NM_018965", "UBQLN2": "NM_013444", "VCP": "NM_007126"}' \
- --output-dir data/tangl
+python ./data_preprocessing/extract_variants.py \
+--input data/tangl/tangl_id.hg38_multianno.annotated-variant-counts.tsv \
+--isoforms '{"ANXA11": "NM_001157", "APOE": "NM_000041", "APP": "NM_000484", "CHMP2B": "NM_014043", "CSF1R": "NM_005211", "DNAJC5": "NM_025219", "FUS": "NM_001170634", "GRN": "NM_002087", "LRRK2": "NM_198578", "MAPT": "NM_005910", "NOTCH3": "NM_000435", "PSEN1": "NM_000021", "PSEN2": "NM_000447", "RELN": "NM_005045", "SOD1": "NM_000454", "SQSTM1": "NM_003900", "TARDBP": "NM_007375", "TBK1": "NM_013254", "TREM2": "NM_018965", "VCP": "NM_007126"}' \
+--output-dir data/tangl
 
-# Extract RedLat variants
- python extract_variants.py \
-    --input raw_data/redlat/redlat.tsv \
-    --isoforms '{"PSEN1": "NM_000021", "PSEN2": "NM_000447", "TARDBP": "NM_007375", "MAPT": "NM_005910"}' \
-    --output-dir data/redlat
-
-```
-
----
 
 ## Installation
 
@@ -64,6 +55,30 @@ python extract_variants.py \
    python -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
+   ```
+   You need to have Python ≥ 3.11 installed. If you do `python --version` inside that environment and it’s < 3.11, follow the next step.
+
+3. **Install & use Python 3.11 for your venv**  
+
+   – **Install Python 3.11** (to get the `python3.11` binary). For example, with Homebrew on an Intel Mac:  
+     ```bash
+     brew install python@3.11
+     ```  
+     This will give you a `python3.11` executable (typically at `/usr/local/opt/python@3.11/libexec/bin/python3`).
+
+   – **Recreate your venv using that binary**:  
+     ```bash
+     rm -rf .venv
+     /usr/local/opt/python@3.11/libexec/bin/python3 -m venv .venv
+     source .venv/bin/activate
+     pip install --upgrade pip    # optional but recommended
+     pip install -r requirements.txt
+     ```
+
+4. **Verify**  
+   ```bash
+   python --version   # → Python 3.11.x
+   pip list           # shows your project’s dependencies
    ```
 
 ## Running the App
@@ -95,7 +110,3 @@ If you use any of our data, please cite us:
 
 - **TANGL**: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). _A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects._ Genome Medicine, 14(1), 27.
 - **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
-
-```
-
-```

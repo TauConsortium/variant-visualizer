@@ -1,6 +1,0 @@
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld-mnd_het	ftld-mnd_hom	aao_het	aao_hom	healthy_het	healthy_hom
-APP	S614G	614	exon14	0	5	0	0	5	0	0	0	0	0	5	0	0	0
-APP	E449K	449	exon11	0	3	0	0	3	0	0	0	0	0	3	0	0	0
-APP	E414K	414	exon10	0	1	0	0	0	0	1	0	0	0	1	0	0	0
-APP	M170I	170	exon5	0	1	0	2	1	0	0	0	0	0	1	0	0	0
-APP	T107I	107	exon3	0	1	0	0	0	0	1	0	0	0	0	0	0	0

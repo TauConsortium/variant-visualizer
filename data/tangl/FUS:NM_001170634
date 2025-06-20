@@ -1,0 +1,9 @@
+Gene.refGene	variant	AA	exon	all.Hom_A1	all.Het	ad.Hom_A1	ad.Het	ftld-mnd.Hom_A1	ftld-mnd.Het	eod.Hom_A1	eod.Het	aao.Hom_A1	aao.Het	healthy.Hom_A1	healthy.Het
+FUS	A16V	16	3	0	1	0	0	0	0	0	0	0	0	0	1
+FUS	P18A	18	3	0	1	0	0	0	0	0	0	0	0	0	0
+FUS	N63S	63	3	0	1	0	0	0	1	0	0	0	1	0	0
+FUS	S134N	134	5	0	8	0	3	0	3	0	0	0	5	0	0
+FUS	N161H	161	5	0	16	0	5	0	6	0	3	0	11	0	0
+FUS	G173_G174del	173_G174de	5	0	8	0	5	0	2	0	0	0	7	0	1
+FUS	R247H	247	6	0	1	0	0	0	1	0	0	0	1	0	0
+FUS	Y478C	478	14	0	2	0	1	0	0	0	0	0	1	0	1
