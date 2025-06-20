@@ -27,8 +27,14 @@ This application reads variant data from tab-delimited files named after genes (
 Each gene file must be tab-delimited with no file extension. Here's an example of the content inside a file (e.g., `ABCA7`):
 
 ```text
-Gene.refGene	variant	AA	exon	het_case	hom_case	het_control	hom_control	ad_het	ad_hom	eod_het	eod_hom	ftld_het	ftld_hom	aao65_het	aao65_hom	healthy_het	healthy_hom
-ABCA7	N79T	79	exon4	0	3	0	1	0	3	0	0	0	0	0	2	0	0
+| Gene.refGene | Variant | AA  | Exon | all.Hom_A1 | all.Het | ad.Hom_A1 | ad.Het | ftd.Hom_A1 | ftd.Het | aao.Hom_A1 | aao.Het | healthy.Hom_A1 | healthy.Het |
+|--------------|---------|-----|------|------------|---------|-----------|--------|------------|---------|-------------|---------|------------------|--------------|
+| ANXA11       | G503R   | 503 | 15   | 0          | 3       | 0         | 3      | 0          | 0       | 0           | 0       | 0                | 0            |
+| ANXA11       | S486L   | 486 | 14   | 0          | 4       | 0         | 3      | 0          | 0       | 0           | 0       | 0                | 0            |
+| ANXA11       | I457V   | 457 | 14   | 0          | 15      | 0         | 7      | 0          | 6       | 0           | 0       | 0                | 0            |
+| ANXA11       | I406V   | 406 | 12   | 0          | 1       | 0         | 1      | 0          | 0       | 0           | 0       | 0                | 0            |
+| ANXA11       | R386G   | 386 | 11   | 0          | 2       | 0         | 2      | 0          | 0       | 0           | 0       | 0                | 0            |
+
 ```
 
 These gene-named files can be generated using `extract_variants.py`:
@@ -36,9 +42,30 @@ These gene-named files can be generated using `extract_variants.py`:
 ```bash
 # Extract tangl variants
 python ./data_preprocessing/extract_variants.py \
---input data/tangl/tangl_id.hg38_multianno.annotated-variant-counts.tsv \
---isoforms '{"ANXA11": "NM_001157", "APOE": "NM_000041", "APP": "NM_000484", "CHMP2B": "NM_014043", "CSF1R": "NM_005211", "DNAJC5": "NM_025219", "FUS": "NM_001170634", "GRN": "NM_002087", "LRRK2": "NM_198578", "MAPT": "NM_005910", "NOTCH3": "NM_000435", "PSEN1": "NM_000021", "PSEN2": "NM_000447", "RELN": "NM_005045", "SOD1": "NM_000454", "SQSTM1": "NM_003900", "TARDBP": "NM_007375", "TBK1": "NM_013254", "TREM2": "NM_018965", "VCP": "NM_007126"}' \
---output-dir data/tangl
+  --input data/tangl/tangl_id.hg38_multianno.annotated-variant-counts.tsv \
+  --isoforms '{
+      "ANXA11": "NM_001157",
+      "APOE":  "NM_000041",
+      "APP":   "NM_000484",
+      "CHMP2B":"NM_014043",
+      "CSF1R": "NM_005211",
+      "DNAJC5":"NM_025219",
+      "FUS":   "NM_001170634",
+      "GRN":   "NM_002087",
+      "LRRK2": "NM_198578",
+      "MAPT":  "NM_005910",
+      "NOTCH3":"NM_000435",
+      "PSEN1": "NM_000021",
+      "PSEN2": "NM_000447",
+      "RELN":  "NM_005045",
+      "SOD1":  "NM_000454",
+      "SQSTM1":"NM_003900",
+      "TARDBP":"NM_007375",
+      "TBK1":  "NM_013254",
+      "TREM2": "NM_018965",
+      "VCP":   "NM_007126"
+  }' \
+  --output-dir data/tangl
 ```
 
 ## Installation
