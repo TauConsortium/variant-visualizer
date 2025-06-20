@@ -2,7 +2,9 @@
 
 # Variant Visualizer
 
-A Dash-based web application to visualize case/control variant counts. You may generate graphs from our predefined datasets or upload custom `.txt` files yourself. We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL and ReDLat cohorts
+A Dash-based web application designed to visualize and compare allelic counts in selected genes across multiple cohorts. \
+We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL and ReDLat cohorts. \
+You can see it in action here: [Variant Visualizer: TANGL and ReDLat](doi.org/10.5062/F4BR8QFB )
 
 ![plot](assets/image.png)
 
@@ -24,17 +26,13 @@ This application reads variant data from tab-delimited files named after genes (
 
 ## Generating the Files
 
-Each gene file must be tab-delimited with no file extension. Here's an example of the content inside a file (e.g., `ABCA7`):
+Each gene file must be tab-delimited with no file extension. Here's an example of the content inside a file (e.g., `ANXA11:NM_001157`):
 
 ```text
-| Gene.refGene | Variant | AA  | Exon | all.Hom_A1 | all.Het | ad.Hom_A1 | ad.Het | ftd.Hom_A1 | ftd.Het | aao.Hom_A1 | aao.Het | healthy.Hom_A1 | healthy.Het |
-|--------------|---------|-----|------|------------|---------|-----------|--------|------------|---------|-------------|---------|------------------|--------------|
-| ANXA11       | G503R   | 503 | 15   | 0          | 3       | 0         | 3      | 0          | 0       | 0           | 0       | 0                | 0            |
-| ANXA11       | S486L   | 486 | 14   | 0          | 4       | 0         | 3      | 0          | 0       | 0           | 0       | 0                | 0            |
-| ANXA11       | I457V   | 457 | 14   | 0          | 15      | 0         | 7      | 0          | 6       | 0           | 0       | 0                | 0            |
-| ANXA11       | I406V   | 406 | 12   | 0          | 1       | 0         | 1      | 0          | 0       | 0           | 0       | 0                | 0            |
-| ANXA11       | R386G   | 386 | 11   | 0          | 2       | 0         | 2      | 0          | 0       | 0           | 0       | 0                | 0            |
-
+Gene.refGene	variant	AA	exon	all.Hom_A1	all.Het	ad.Hom_A1	ad.Het	ftd.Hom_A1	ftd.Het	aao.Hom_A1	aao.Het	healthy.Hom_A1	healthy.Het
+ANXA11	G503R	503	15	0	3	0	3	0	0	0	0	0	0
+ANXA11	S486L	486	14	0	4	0	3	0	0	0	0	0	0
+ANXA11	I457V	457	14	0	15	0	7	0	6	0	0	0	0
 ```
 
 These gene-named files can be generated using `extract_variants.py`:
@@ -133,7 +131,11 @@ By default, the app runs on `http://127.0.0.1:8050`.
 
 ## Citations
 
-If you use any of our data, please cite us:
+If you use this app to visualize your data, please cite us:
+
+- Dylan Lu, & Juliana Acosta-Uribe. (2025). TauConsortium/variant-visualizer (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.15652736
+
+If you use any of the TANGL or ReDLat data, please cite the corresponding paper:
 
 - **TANGL**: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). _A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects._ Genome Medicine, 14(1), 27.
-- **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
+- **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
