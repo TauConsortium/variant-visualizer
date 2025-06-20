@@ -39,7 +39,7 @@ python ./data_preprocessing/extract_variants.py \
 --input data/tangl/tangl_id.hg38_multianno.annotated-variant-counts.tsv \
 --isoforms '{"ANXA11": "NM_001157", "APOE": "NM_000041", "APP": "NM_000484", "CHMP2B": "NM_014043", "CSF1R": "NM_005211", "DNAJC5": "NM_025219", "FUS": "NM_001170634", "GRN": "NM_002087", "LRRK2": "NM_198578", "MAPT": "NM_005910", "NOTCH3": "NM_000435", "PSEN1": "NM_000021", "PSEN2": "NM_000447", "RELN": "NM_005045", "SOD1": "NM_000454", "SQSTM1": "NM_003900", "TARDBP": "NM_007375", "TBK1": "NM_013254", "TREM2": "NM_018965", "VCP": "NM_007126"}' \
 --output-dir data/tangl
-
+```
 
 ## Installation
 
