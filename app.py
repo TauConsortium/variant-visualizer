@@ -105,21 +105,22 @@ server = app.server
 app.layout = html.Div([
     html.Div([
         html.H1("Variant Visualizer", 
-                style={"marginBottom": "0", "fontWeight": "bold"}),
+                style={"marginBottom": "10px", "fontWeight": "bold"}),
         
         html.H5("Explore allelic counts in neurodegenerative disease cohorts", 
-                style={"color": "#555", "marginTop": "3px"}), 
+                style={"marginBottom": "30px","color": "#555"}), 
         
-        html.H5("How to use this app: 1. Select a cohort, 2. Choose a category. 3. Choose a gene from the dropdown, 4. View the generated plot below", 
-                style={"color": "#555", "marginTop": "3px"})
-    ], style={"textAlign": "center", "marginTop": "30px", "marginBottom": "20px"})
+        html.H5("To use this app click on a cohort, choose a category and select a gene from the dropdown", 
+                style={"color": "#555", "fontSize": "14px", "fontwidth": "normal"})
+    ], style={"textAlign": "center", "marginTop": "30px", "marginBottom": "20px"}
+    ),
 
 
     html.Div(
         [dbc.Button(ds.upper(),
                     id={"type": "dataset-button", "index": ds},
                     n_clicks=0,
-                    color="primary",
+                    color="dark",
                     className="me-2 mb-2") for ds in datasets],
         className="d-flex flex-wrap mb-3 justify-content-center"
     ),
@@ -193,7 +194,7 @@ def update_cohort_buttons(selected_dataset):
     else:  # tangl
         allowed = {"all", "ad", "eod", "ftld-mnd", "aao", "healthy"}
     return html.Div(
-        [dbc.Button(label, id={"type": "cohort-button", "index": val}, n_clicks=0, color="secondary", className="me-2 mb-2")
+        [dbc.Button(label, id={"type": "cohort-button", "index": val}, n_clicks=0, color="warning", className="me-2 mb-2")
          for val, label in cohort_categories if val in allowed],
         className="d-flex flex-wrap mb-3 justify-content-center"
     )

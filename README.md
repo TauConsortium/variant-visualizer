@@ -1,29 +1,37 @@
 
 # Variant Visualizer
 
-A Dash-based web application designed to visualize and compare allelic counts in selected genes across multiple cohorts. \
+### Developed by:
+
+- Dylan Lu `dylanlu@ucsb.edu`
+- Juliana Acosta-Uribe `acostauribe@ucsb.edu`
+
+
+The **Variant Visualizer** is a dash-based web application designed to visualize and compare allelic counts in selected genes across multiple cohorts. \
 We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL<sup>1</sup> and ReDLat<sup>2</sup> cohorts. \
 You can see it in action [here](https://doi.org/10.5062/F4BR8QFB)
 
 ![plot](assets/image.png)
 
-## Contents
+You can follow the following steps to plot your own data with the variant visualizer
+
+### Contents
 
 - [Introduction](#introduction)
-- [Generating the `.txt` Files](#generating-the-txt-files)
+- [Generating the `gene` files](#generating-the-gene-files)
 - [Installation](#installation)
 - [Running the App](#running-the-app)
-- [App Structure](#app-structure)
 - [Usage](#usage)
-- [Citations](#citations)
+- [Troubleshooting](#troubleshooting)
+- [References](#references)
 
----
 
-## Introduction
+
+### Introduction
 
 This application reads variant data from tab-delimited files named after genes (e.g., `PSEN1`, `MAPT`). Each file contains columns for exon number, amino-acid position (AA), variant identifier, and case/control counts, including subgroup counts (e.g., AD, EOD, FTLD, AAO<65, Healthy). It clusters nearby variants within the same exon, renders vertical lines and scatter points to represent counts, and draws exon-range bars with a legend.
 
-## Generating the Files
+### Generating the gene files
 
 Each gene file must be tab-delimited with no file extension. Here's an example of the content inside a file (e.g., `ANXA11:NM_001157`):
 
@@ -65,7 +73,7 @@ python ./data_preprocessing/extract_variants.py \
   --output-dir data/tangl
 ```
 
-## Installation
+### Installation
 
 1. **Clone** this repository:
 
@@ -75,37 +83,18 @@ python ./data_preprocessing/extract_variants.py \
    ```
 
 2. **Create** a virtual environment and install dependencies:
+
    ```bash
    python -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
    ```
-   You need to have Python ≥ 3.11 installed. If you do `python --version` inside that environment and it’s < 3.11, follow the next step.
 
-3. **Install & use Python 3.11 for your venv**  
+   You need to have Python ≥ 3.11 installed. If you do `python --version` inside that environment and it’s < 3.11, follow the troubleshooting guide at the end.
 
-   – **Install Python 3.11** (to get the `python3.11` binary). For example, with Homebrew on an Intel Mac:  
-     ```bash
-     brew install python@3.11
-     ```  
-     This will give you a `python3.11` executable (typically at `/usr/local/opt/python@3.11/libexec/bin/python3`).
+### Running the App
 
-   – **Recreate your venv using that binary**:  
-     ```bash
-     rm -rf .venv
-     /usr/local/opt/python@3.11/libexec/bin/python3 -m venv .venv
-     source .venv/bin/activate
-     pip install --upgrade pip    # optional but recommended
-     pip install -r requirements.txt
-     ```
-
-4. **Verify**  
-   ```bash
-   python --version   # Python 3.11.x
-   pip list           # shows your project’s dependencies
-   ```
-
-## Running the App
+Run the following command from the terminal
 
 ```bash
 # Deploy/Run locally
@@ -115,20 +104,51 @@ gunicorn app:server --bind 0.0.0.0:8050
 By default, the app runs on `http://127.0.0.1:8050`
 You can change the port number if 8050 is being used
 
-
-## Usage
+### Usage
 
 1. Select a cohort
 2. Choose a category
 3. Choose a gene from the dropdown
 4. View the generated plot below
 
-## Developed by:
+> You will have to edit the `app.py` file to match your own cohort and categories
 
-- Dylan Lu `dylanlu@ucsb.edu`
-- Juliana Acosta-Uribe `acostauribe@ucsb.edu`
+---
 
-## Citations
+### Troubleshooting
+
+**Use the correct python version for your virtual environment**  
+
+   - **Install Python 3.11** 
+   
+   For example, with Homebrew on an Intel Mac:  
+
+   ```bash
+   brew install python@3.11
+   ```  
+
+   This will give you a `python3.11` executable (typically at `/usr/local/opt/python@3.11/libexec/bin/python3`). \
+   You can search for the path by typing in the terminal `which python3`
+
+   - **Recreate your venv using that binary**:  
+
+   ```bash
+   rm -rf .venv
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install --upgrade pip    # optional but recommended
+   pip install -r requirements.txt
+   ```
+
+   - **Verify**  
+   
+   ```bash
+   python --version   # Python 3.11.x
+   pip list           # shows your project’s dependencies
+   ```
+
+
+### References
 
 If you use this app to visualize your data, please cite us:
 
@@ -138,4 +158,4 @@ If you use this app to visualize your data, please cite us:
 If you use any of the TANGL or ReDLat data, please cite the corresponding paper:
 
 1. **TANGL**: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). _A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects._ Genome Medicine, 14(1), 27.
-2. **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
+2. **ReDLat**: Acosta-Uribe, J., Piña-Escudero, S. D., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
