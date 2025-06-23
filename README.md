@@ -153,7 +153,7 @@ You can change the port number if 8050 is being used, or if you want to re-lauch
 
 If you use this app to visualize your data, please cite us:
 
-- Dylan Lu, & Juliana Acosta-Uribe. (2025). TauConsortium/variant-visualizer (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.15652736 [![DOI](https://zenodo.org/badge/15652735.svg)](https://doi.org/10.5281/zenodo.15652735)
+- Dylan Lu, & Juliana Acosta-Uribe. (2025). TauConsortium/variant-visualizer (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.15652736 [![DOI](https://zenodo.org/badge/943586959.svg)](https://doi.org/10.5281/zenodo.15652735)
 
 
 If you use any of the TANGL or ReDLat data, please cite the corresponding paper:
