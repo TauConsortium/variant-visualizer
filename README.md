@@ -102,7 +102,8 @@ gunicorn app:server --bind 0.0.0.0:8050
 ```
 
 By default, the app runs on `http://127.0.0.1:8050`
-You can change the port number if 8050 is being used
+You can change the port number if 8050 is being used, or if you want to re-lauch the app, you can reset the 8050 port by doing `lsof -i :8050`
+
 
 ### Usage
 
