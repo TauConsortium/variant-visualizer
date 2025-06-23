@@ -84,10 +84,12 @@ legend_map = {
             ),
         "aao": (
             "Variant counts represent the patients diagnosed with AD or FTD at 65 years or younger.\n"
+            "Some of the patients from the retrospective cohort did not have record of their age at onset and were excluded from this analysis.\n"
             "The dataset includes related individuals."
         ),
         "healthy": (
             "Variant counts represent  individuals with normal cognition aged 70 years or older.\n"
+            "Some of the participants from the retrospective cohort did not have record of their age at evaluation and were excluded from this analysis.\n"
             "The dataset includes related individuals."
         )
     }
@@ -146,7 +148,7 @@ app.layout = html.Div([
             style={"marginTop": "0", "marginBottom": "3px"}   
         ),
         html.P(
-            "ReDLat: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations. medRxiv.",
+            "ReDLat: Acosta-Uribe, J., Piña-Escudero, S. D., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations. medRxiv.",
             style={"marginTop": "0"}
         ),
     ], style={"marginTop": "40px", "padding": "5px", "borderTop": "1px solid #ccc", "fontSize": "14px"}),
