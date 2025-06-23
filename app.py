@@ -104,9 +104,16 @@ server = app.server
 # Layout of the app
 app.layout = html.Div([
     html.Div([
-        html.H1("Variant Visualizer", style={"marginBottom": "0", "fontWeight": "bold"}),
-        html.H5("Explore allelic counts in neurodegenerative disease cohorts", style={"color": "#555", "marginTop": "3"})
-    ], style={"textAlign": "center", "marginTop": "30px", "marginBottom": "20px"}),
+        html.H1("Variant Visualizer", 
+                style={"marginBottom": "0", "fontWeight": "bold"}),
+        
+        html.H5("Explore allelic counts in neurodegenerative disease cohorts", 
+                style={"color": "#555", "marginTop": "3px"}), 
+        
+        html.H5("How to use this app: 1. Select a cohort, 2. Choose a category. 3. Choose a gene from the dropdown, 4. View the generated plot below", 
+                style={"color": "#555", "marginTop": "3px"})
+    ], style={"textAlign": "center", "marginTop": "30px", "marginBottom": "20px"})
+
 
     html.Div(
         [dbc.Button(ds.upper(),
