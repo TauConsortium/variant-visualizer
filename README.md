@@ -101,7 +101,7 @@ python ./data_preprocessing/extract_variants.py \
 
 4. **Verify**  
    ```bash
-   python --version   # → Python 3.11.x
+   python --version   # Python 3.11.x
    pip list           # shows your project’s dependencies
    ```
 
@@ -112,16 +112,16 @@ python ./data_preprocessing/extract_variants.py \
 gunicorn app:server --bind 0.0.0.0:8050
 ```
 
-By default, the app runs on `http://127.0.0.1:8050`.
+By default, the app runs on `http://127.0.0.1:8050`
+You can change the port number if 8050 is being used
 
----
 
 ## Usage
 
-1. Select a dataset tab (Currently only `TANGL`).
+1. Select a cohort
 2. Choose a category
-3. Choose a file from the dropdown.
-4. View the generated plot below.
+3. Choose a gene from the dropdown
+4. View the generated plot below
 
 ## Developed by:
 
@@ -137,5 +137,5 @@ If you use this app to visualize your data, please cite us:
 
 If you use any of the TANGL or ReDLat data, please cite the corresponding paper:
 
-- **TANGL**: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). _A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects._ Genome Medicine, 14(1), 27.
-- **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
+1. **TANGL**: Acosta-Uribe, J., Aguillón, D., Cochran, J. N., Giraldo, M., Madrigal, L., Killingsworth, B. W., ... & Kosik, K. S. (2022). _A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects._ Genome Medicine, 14(1), 27.
+2. **ReDLat**: Acosta-Uribe, J., Escudero, S. D. P., Cochran, J. N., Taylor, J. W., Castruita, P. A., Jonson, C., ... Kosik, K. S. & Yokoyama, J. S. (2024). _Genetic Contributions to Alzheimer’s Disease and Frontotemporal Dementia in Admixed Latin American Populations._ medRxiv.
