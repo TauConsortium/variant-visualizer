@@ -1,9 +1,8 @@
-[![DOI](https://zenodo.org/badge/943586959.svg)](https://doi.org/10.5281/zenodo.15652735)
 
 # Variant Visualizer
 
 A Dash-based web application designed to visualize and compare allelic counts in selected genes across multiple cohorts. \
-We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL and ReDLat cohorts. \
+We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL<sup>1</sup> and ReDLat<sup>2</sup> cohorts. \
 You can see it in action [here](https://doi.org/10.5062/F4BR8QFB)
 
 ![plot](assets/image.png)
@@ -133,7 +132,8 @@ By default, the app runs on `http://127.0.0.1:8050`.
 
 If you use this app to visualize your data, please cite us:
 
-- Dylan Lu, & Juliana Acosta-Uribe. (2025). TauConsortium/variant-visualizer (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.15652736
+- Dylan Lu, & Juliana Acosta-Uribe. (2025). TauConsortium/variant-visualizer (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.15652736 [![DOI](https://zenodo.org/badge/15652735.svg)](https://doi.org/10.5281/zenodo.15652735)
+
 
 If you use any of the TANGL or ReDLat data, please cite the corresponding paper:
 
