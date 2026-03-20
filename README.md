@@ -10,7 +10,7 @@
 The **Variant Visualizer** is a dash-based web application designed to visualize and compare allelic counts in selected genes across multiple cohorts. \
 We have used it to plot the allelic counts of variant in neurodegeneration associated genes in the TANGL<sup>1</sup> and ReDLat<sup>2</sup> cohorts. \
 
-You can see it in action [here](https://doi.org/10.5062/F4BR8QFB) Currently disabled as of March 2026
+You can see it in action [here](http://kosik-node10.cnsi.ucsb.edu:8050)
 
 ![plot](assets/image.png)
 
